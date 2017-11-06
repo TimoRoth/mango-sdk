@@ -1,0 +1,9 @@
+License Notice for Roslyn
+-------------------------
+
+This software contains code derived from the .NET Compiler Platform ("Roslyn"),
+which is available under the Apache License Version 2.0.
+
+Copyright (c) Microsoft. All Rights Reserved.
+
+See License.txt in the Roslyn project root for license information.

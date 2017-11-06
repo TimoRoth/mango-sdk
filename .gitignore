@@ -1,0 +1,7 @@
+*.g.cs
+*.suo
+*.user
+*~
+.vs
+bin
+obj
