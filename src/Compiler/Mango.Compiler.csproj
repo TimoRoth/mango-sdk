@@ -18,4 +18,8 @@
     <PackageReference Include="System.Collections.Immutable" Version="1.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Mango.Tests.573a5fbf-13ba-478b-b7aa-9a557d71986b" />
+  </ItemGroup>
+  
 </Project>
