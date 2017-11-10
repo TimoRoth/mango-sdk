@@ -1,4 +1,4 @@
-﻿namespace Mango.Compiler.Symbols
+namespace Mango.Compiler.Symbols
 {
     public abstract class ParameterSymbol : Symbol
     {
@@ -8,6 +8,6 @@
 
         public abstract override string Name { get; }
 
-        public abstract TypeSymbol Type { get; }
+        public abstract TypeSymbol ParameterType { get; }
     }
 }

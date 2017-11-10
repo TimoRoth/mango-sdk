@@ -6,8 +6,8 @@ namespace Mango.Compiler.Symbols
 
         public sealed override SymbolKind Kind => SymbolKind.Local;
 
-        public abstract override string Name { get; }
+        public abstract TypeSymbol LocalType { get; }
 
-        public abstract TypeSymbol Type { get; }
+        public abstract override string Name { get; }
     }
 }
