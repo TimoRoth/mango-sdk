@@ -1,4 +1,4 @@
-namespace Mango.Compiler.Symbols.Source
+namespace Mango.Compiler.Symbols
 {
     public abstract class FieldSymbol : Symbol
     {
