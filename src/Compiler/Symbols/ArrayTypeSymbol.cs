@@ -4,6 +4,7 @@ namespace Mango.Compiler.Symbols
     {
         private readonly TypeSymbol _elementType;
         private readonly int _length;
+        private readonly TypeLayout _typeLayout;
 
         internal ArrayTypeSymbol(TypeSymbol elementType, int length)
         {
@@ -14,6 +15,7 @@ namespace Mango.Compiler.Symbols
 
             _elementType = elementType;
             _length = length;
+            _typeLayout = new TypeLayout(checked(length * elementType.TypeLayout.Size), elementType.TypeLayout.Alignment);
         }
 
         public TypeSymbol ElementType => _elementType;
@@ -21,6 +23,8 @@ namespace Mango.Compiler.Symbols
         public sealed override SymbolKind Kind => SymbolKind.ArrayType;
 
         public int Length => _length;
+
+        public override TypeLayout TypeLayout => _typeLayout;
 
         public override bool Equals(TypeSymbol other) => (object)this == other || other is ArrayTypeSymbol arrayType && _length == arrayType._length && _elementType == arrayType._elementType;
 

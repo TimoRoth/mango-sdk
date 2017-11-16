@@ -3,6 +3,7 @@ namespace Mango.Compiler.Symbols
     public sealed class ReferenceTypeSymbol : TypeSymbol
     {
         private readonly TypeSymbol _referencedType;
+        private readonly TypeLayout _typeLayout;
 
         internal ReferenceTypeSymbol(TypeSymbol referencedType)
         {
@@ -10,11 +11,14 @@ namespace Mango.Compiler.Symbols
                 throw new System.ArgumentException();
 
             _referencedType = referencedType;
+            _typeLayout = new TypeLayout(4, 4);
         }
 
         public sealed override SymbolKind Kind => SymbolKind.ReferenceType;
 
         public TypeSymbol ReferencedType => _referencedType;
+
+        public override TypeLayout TypeLayout => _typeLayout;
 
         public override bool Equals(TypeSymbol other) => (object)this == other || other is ReferenceTypeSymbol referenceType && _referencedType == referenceType._referencedType;
 
