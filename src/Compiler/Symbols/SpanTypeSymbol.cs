@@ -6,7 +6,7 @@ namespace Mango.Compiler.Symbols
 
         internal SpanTypeSymbol(TypeSymbol elementType)
         {
-            if (!TypeSymbol.ValidLocationType(elementType))
+            if (!ValidLocationType(elementType))
                 throw new System.ArgumentException();
 
             _elementType = elementType;
