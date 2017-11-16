@@ -4,6 +4,8 @@ namespace Mango.Compiler.Symbols
     {
         private protected FieldSymbol() { }
 
+        public abstract int FieldOffset { get; }
+
         public abstract TypeSymbol FieldType { get; }
 
         public sealed override SymbolKind Kind => SymbolKind.Field;
