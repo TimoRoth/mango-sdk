@@ -4,8 +4,6 @@ namespace Mango.Compiler.Symbols
     {
         private protected TypeSymbol() { }
 
-        public virtual NamedTypeSymbol BaseType => null;
-
         public virtual SpecialType SpecialType => SpecialType.None;
 
         public virtual bool Equals(TypeSymbol other) => (object)this == other;
@@ -21,8 +19,6 @@ namespace Mango.Compiler.Symbols
             this is FunctionTypeSymbol func ? func.ReturnType + "(" + string.Join(", ", func.ParameterTypes) + ")" :
             this is NamedTypeSymbol named ? named.Name :
             Kind.ToString();
-
-        internal static bool ValidBaseType(TypeSymbol type) => type == null || type.SpecialType == SpecialType.None && type.Kind == SymbolKind.NamedType;
 
         internal protected static bool ValidLocationType(TypeSymbol type) => type != null && type.SpecialType != SpecialType.Void;
 
