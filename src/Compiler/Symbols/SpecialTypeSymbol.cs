@@ -2,12 +2,11 @@ namespace Mango.Compiler.Symbols
 {
     internal sealed class SpecialTypeSymbol : NamedTypeSymbol
     {
-        private const int SpecialTypeCount = 14;
+        private const int SpecialTypeCount = 13;
 
         private static readonly NamedTypeSymbol[] s_specialTypes = new NamedTypeSymbol[SpecialTypeCount]
         {
             null,
-            new SpecialTypeSymbol("null", SpecialType.Null),
             new SpecialTypeSymbol("void", SpecialType.Void),
             new SpecialTypeSymbol("bool", SpecialType.Bool),
             new SpecialTypeSymbol("i8", SpecialType.Int8),

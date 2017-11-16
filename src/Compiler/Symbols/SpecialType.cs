@@ -3,7 +3,6 @@ namespace Mango.Compiler.Symbols
     public enum SpecialType
     {
         None,
-        Null,
         Void,
         Bool,
         Int8,
