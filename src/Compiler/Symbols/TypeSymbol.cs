@@ -27,7 +27,5 @@ namespace Mango.Compiler.Symbols
         internal protected static bool ValidLocationType(TypeSymbol type) => type != null && type.SpecialType != SpecialType.Void;
 
         internal protected static bool ValidReturnType(TypeSymbol type) => type != null;
-
-        internal protected static bool ValidValueType(TypeSymbol type) => type != null && type.SpecialType != SpecialType.Void;
     }
 }
