@@ -38,6 +38,8 @@ namespace Mango.Compiler.Symbols
             _typeLayout = new TypeLayout(size, alignment);
         }
 
+        public override Symbol ContainingSymbol => null;
+
         public override ImmutableArray<FieldSymbol> Fields => ImmutableArray<FieldSymbol>.Empty;
 
         public override string Name => _name;
@@ -45,8 +47,6 @@ namespace Mango.Compiler.Symbols
         public override SpecialType SpecialType => _specialType;
 
         public override TypeLayout TypeLayout => _typeLayout;
-
-        public override Symbol ContainingSymbol => null;
 
         internal static NamedTypeSymbol GetSpecialType(SpecialType specialType) => unchecked((uint)specialType < SpecialTypeCount ? s_specialTypes[(int)specialType] : null);
     }
