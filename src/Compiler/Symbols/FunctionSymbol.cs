@@ -6,8 +6,6 @@ namespace Mango.Compiler.Symbols
     {
         private protected FunctionSymbol() { }
 
-        public abstract FunctionTypeSymbol FunctionType { get; }
-
         public sealed override SymbolKind Kind => SymbolKind.Function;
 
         public abstract ImmutableArray<LocalSymbol> Locals { get; }
