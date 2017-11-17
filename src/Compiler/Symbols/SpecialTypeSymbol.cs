@@ -1,3 +1,5 @@
+using System.Collections.Immutable;
+
 namespace Mango.Compiler.Symbols
 {
     internal sealed class SpecialTypeSymbol : NamedTypeSymbol
@@ -36,6 +38,8 @@ namespace Mango.Compiler.Symbols
             _specialType = specialType;
             _typeLayout = new TypeLayout(size, alignment);
         }
+
+        public override ImmutableArray<FieldSymbol> Fields => ImmutableArray<FieldSymbol>.Empty;
 
         public override string Name => _name;
 
