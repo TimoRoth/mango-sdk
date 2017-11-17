@@ -11,5 +11,6 @@ namespace Mango.Compiler.Symbols
         Function,
         Parameter,
         Local,
+        Label,
     }
 }

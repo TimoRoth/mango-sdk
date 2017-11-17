@@ -8,6 +8,8 @@ namespace Mango.Compiler.Symbols
 
         public sealed override SymbolKind Kind => SymbolKind.Function;
 
+        public abstract ImmutableArray<LabelSymbol> Labels { get; }
+
         public abstract ImmutableArray<LocalSymbol> Locals { get; }
 
         public abstract override string Name { get; }
