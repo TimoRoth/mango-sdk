@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Diagnostics;
 
 namespace Mango.Compiler.Symbols
 {
@@ -29,10 +30,8 @@ namespace Mango.Compiler.Symbols
 
         private SpecialTypeSymbol(string name, SpecialType specialType, int size, int alignment)
         {
-            if (string.IsNullOrEmpty(name))
-                throw new System.ArgumentException();
-            if (unchecked((uint)specialType >= SpecialTypeCount))
-                throw new System.ArgumentException();
+            Debug.Assert(name != null);
+            Debug.Assert(unchecked((uint)specialType < SpecialTypeCount));
 
             _name = name;
             _specialType = specialType;
