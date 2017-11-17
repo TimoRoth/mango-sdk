@@ -43,6 +43,8 @@ namespace Mango.Compiler.Symbols
 
         public override TypeLayout TypeLayout => _typeLayout;
 
+        public override Symbol ContainingSymbol => null;
+
         internal static NamedTypeSymbol GetSpecialType(SpecialType specialType) => unchecked((uint)specialType < SpecialTypeCount ? s_specialTypes[(int)specialType] : null);
     }
 }

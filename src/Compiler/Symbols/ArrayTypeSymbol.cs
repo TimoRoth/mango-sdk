@@ -26,6 +26,8 @@ namespace Mango.Compiler.Symbols
 
         public override TypeLayout TypeLayout => _typeLayout;
 
+        public override Symbol ContainingSymbol => null;
+
         public override bool Equals(TypeSymbol other) => (object)this == other || other is ArrayTypeSymbol arrayType && _length == arrayType._length && _elementType == arrayType._elementType;
 
         public override int GetHashCode() => Utilities.Hash.Combine(_elementType, Utilities.Hash.Combine(_length, (int)SymbolKind.ArrayType));

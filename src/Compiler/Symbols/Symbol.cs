@@ -7,6 +7,8 @@ namespace Mango.Compiler.Symbols
     {
         private protected Symbol() { }
 
+        public abstract Symbol ContainingSymbol { get; }
+
         public abstract SymbolKind Kind { get; }
 
         public virtual string Name => string.Empty;

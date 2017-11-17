@@ -20,6 +20,8 @@ namespace Mango.Compiler.Symbols
 
         public override TypeLayout TypeLayout => _typeLayout;
 
+        public override Symbol ContainingSymbol => null;
+
         public override bool Equals(TypeSymbol other) => (object)this == other || other is ReferenceTypeSymbol referenceType && _referencedType == referenceType._referencedType;
 
         public override int GetHashCode() => Utilities.Hash.Combine(_referencedType, (int)SymbolKind.ReferenceType);

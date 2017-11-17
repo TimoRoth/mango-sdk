@@ -31,6 +31,8 @@ namespace Mango.Compiler.Symbols
 
         public override TypeLayout TypeLayout => _typeLayout;
 
+        public override Symbol ContainingSymbol => null;
+
         public override bool Equals(TypeSymbol other) => (object)this == other || other is FunctionTypeSymbol functionType && _returnType == functionType._returnType && _parameterTypes.Length == functionType._parameterTypes.Length && System.Linq.Enumerable.SequenceEqual(_parameterTypes, functionType._parameterTypes);
 
         public override int GetHashCode() => Utilities.Hash.CombineValues(_parameterTypes, Utilities.Hash.Combine(_returnType, (int)SymbolKind.FunctionType));
