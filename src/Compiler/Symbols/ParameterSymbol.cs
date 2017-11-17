@@ -8,6 +8,6 @@ namespace Mango.Compiler.Symbols
 
         public abstract override string Name { get; }
 
-        public abstract TypeSymbol ParameterType { get; }
+        public abstract TypeSymbol Type { get; }
     }
 }
