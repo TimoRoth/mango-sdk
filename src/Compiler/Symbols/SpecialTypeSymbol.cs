@@ -10,7 +10,7 @@ namespace Mango.Compiler.Symbols
         private static readonly NamedTypeSymbol[] s_specialTypes = new NamedTypeSymbol[SpecialTypeCount]
         {
             null,
-            new SpecialTypeSymbol("void", SpecialType.Void, 1, 1),
+            new SpecialTypeSymbol("void", SpecialType.Void, 0, 0),
             new SpecialTypeSymbol("bool", SpecialType.Bool, 1, 1),
             new SpecialTypeSymbol("i8", SpecialType.Int8, 1, 1),
             new SpecialTypeSymbol("i16", SpecialType.Int16, 2, 2),

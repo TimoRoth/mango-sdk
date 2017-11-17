@@ -12,7 +12,7 @@ namespace Mango.Compiler.Symbols
 
         public TypeLayout(int size, int alignment)
         {
-            if (alignment <= 0 || (alignment & (alignment - 1)) != 0)
+            if (alignment < 0 || (alignment & (alignment - 1)) != 0)
                 throw new ArgumentOutOfRangeException(nameof(alignment));
             if (size < 0 || (size & (alignment - 1)) != 0)
                 throw new ArgumentOutOfRangeException(nameof(size));
