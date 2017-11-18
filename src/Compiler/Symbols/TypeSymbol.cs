@@ -6,6 +6,8 @@ namespace Mango.Compiler.Symbols
 
         public virtual SpecialType SpecialType => SpecialType.None;
 
+        public abstract TypeKind TypeKind { get; }
+
         public abstract TypeLayout TypeLayout { get; }
 
         public virtual bool Equals(TypeSymbol other) => (object)this == other;

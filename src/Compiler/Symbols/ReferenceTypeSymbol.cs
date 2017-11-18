@@ -16,9 +16,11 @@ namespace Mango.Compiler.Symbols
 
         public override Symbol ContainingSymbol => null;
 
-        public sealed override SymbolKind Kind => SymbolKind.ReferenceType;
+        public override SymbolKind Kind => SymbolKind.ReferenceType;
 
         public TypeSymbol ReferencedType => _referencedType;
+
+        public override TypeKind TypeKind => TypeKind.Reference;
 
         public override TypeLayout TypeLayout => _typeLayout;
 

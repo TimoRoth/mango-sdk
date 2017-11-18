@@ -22,9 +22,11 @@ namespace Mango.Compiler.Symbols
 
         public TypeSymbol ElementType => _elementType;
 
-        public sealed override SymbolKind Kind => SymbolKind.ArrayType;
+        public override SymbolKind Kind => SymbolKind.ArrayType;
 
         public int Length => _length;
+
+        public override TypeKind TypeKind => TypeKind.Array;
 
         public override TypeLayout TypeLayout => _typeLayout;
 

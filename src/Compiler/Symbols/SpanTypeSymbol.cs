@@ -18,7 +18,9 @@ namespace Mango.Compiler.Symbols
 
         public TypeSymbol ElementType => _elementType;
 
-        public sealed override SymbolKind Kind => SymbolKind.SpanType;
+        public override SymbolKind Kind => SymbolKind.SpanType;
+
+        public override TypeKind TypeKind => TypeKind.Span;
 
         public override TypeLayout TypeLayout => _typeLayout;
 

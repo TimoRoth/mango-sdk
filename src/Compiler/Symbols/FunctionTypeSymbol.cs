@@ -23,13 +23,15 @@ namespace Mango.Compiler.Symbols
 
         public override Symbol ContainingSymbol => null;
 
-        public sealed override SymbolKind Kind => SymbolKind.FunctionType;
+        public override SymbolKind Kind => SymbolKind.FunctionType;
 
         public ImmutableArray<TypeSymbol> ParameterTypes => _parameterTypes;
 
         public bool ReturnsVoid => _returnType.SpecialType == SpecialType.Void;
 
         public TypeSymbol ReturnType => _returnType;
+
+        public override TypeKind TypeKind => TypeKind.Function;
 
         public override TypeLayout TypeLayout => _typeLayout;
 

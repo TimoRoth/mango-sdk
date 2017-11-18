@@ -11,5 +11,7 @@ namespace Mango.Compiler.Symbols
         public sealed override SymbolKind Kind => SymbolKind.StructuredType;
 
         public abstract override string Name { get; }
+
+        public sealed override TypeKind TypeKind => TypeKind.Structured;
     }
 }
