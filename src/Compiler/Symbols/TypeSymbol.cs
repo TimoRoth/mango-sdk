@@ -23,8 +23,8 @@ namespace Mango.Compiler.Symbols
             this is StructuredTypeSymbol named ? named.Name :
             Kind.ToString();
 
-        internal protected static bool ValidLocationType(TypeSymbol type) => type != null && type.SpecialType != SpecialType.Void;
+        internal static bool ValidLocationType(TypeSymbol type) => type != null && type.SpecialType != SpecialType.Void;
 
-        internal protected static bool ValidReturnType(TypeSymbol type) => type != null;
+        internal static bool ValidReturnType(TypeSymbol type) => type != null;
     }
 }
