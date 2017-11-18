@@ -1,13 +1,12 @@
-using System.Collections.Immutable;
 using System.Diagnostics;
 
 namespace Mango.Compiler.Symbols
 {
-    internal sealed class SpecialTypeSymbol : NamedTypeSymbol
+    internal sealed class SpecialTypeSymbol : TypeSymbol
     {
         private const int SpecialTypeCount = 13;
 
-        private static readonly NamedTypeSymbol[] s_specialTypes = new NamedTypeSymbol[SpecialTypeCount]
+        private static readonly TypeSymbol[] s_specialTypes = new TypeSymbol[SpecialTypeCount]
         {
             null,
             new SpecialTypeSymbol("void", SpecialType.Void, 0, 0),
@@ -40,7 +39,7 @@ namespace Mango.Compiler.Symbols
 
         public override Symbol ContainingSymbol => null;
 
-        public override ImmutableArray<FieldSymbol> Fields => ImmutableArray<FieldSymbol>.Empty;
+        public override SymbolKind Kind => SymbolKind.SpecialType;
 
         public override string Name => _name;
 
@@ -48,6 +47,6 @@ namespace Mango.Compiler.Symbols
 
         public override TypeLayout TypeLayout => _typeLayout;
 
-        internal static NamedTypeSymbol GetSpecialType(SpecialType specialType) => unchecked((uint)specialType < SpecialTypeCount ? s_specialTypes[(int)specialType] : null);
+        internal static TypeSymbol GetSpecialType(SpecialType specialType) => unchecked((uint)specialType < SpecialTypeCount ? s_specialTypes[(int)specialType] : null);
     }
 }

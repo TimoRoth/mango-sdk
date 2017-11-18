@@ -15,6 +15,7 @@ namespace Mango.Compiler.Symbols
         public override int GetHashCode() => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(this);
 
         public override string ToString() =>
+            this is SpecialTypeSymbol special ? special.Name :
             this is ReferenceTypeSymbol reference ? reference.ReferencedType + "&" :
             this is ArrayTypeSymbol array ? array.ElementType + "[" + array.Length + "]" :
             this is SpanTypeSymbol span ? span.ElementType + "[]" :
