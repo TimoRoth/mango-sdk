@@ -7,7 +7,7 @@ namespace Mango.Compiler.Symbols
         ReferenceType,
         ArrayType,
         SpanType,
-        NamedType,
+        StructuredType,
         Field,
         Function,
         Parameter,

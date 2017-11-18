@@ -20,7 +20,7 @@ namespace Mango.Compiler.Symbols
             this is ArrayTypeSymbol array ? array.ElementType + "[" + array.Length + "]" :
             this is SpanTypeSymbol span ? span.ElementType + "[]" :
             this is FunctionTypeSymbol func ? func.ReturnType + "(" + string.Join(", ", func.ParameterTypes) + ")" :
-            this is NamedTypeSymbol named ? named.Name :
+            this is StructuredTypeSymbol named ? named.Name :
             Kind.ToString();
 
         internal protected static bool ValidLocationType(TypeSymbol type) => type != null && type.SpecialType != SpecialType.Void;
