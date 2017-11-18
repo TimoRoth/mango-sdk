@@ -19,5 +19,7 @@ namespace Mango.Compiler.Symbols
         public abstract bool ReturnsVoid { get; }
 
         public abstract TypeSymbol ReturnType { get; }
+
+        public abstract FunctionTypeSymbol Type { get; }
     }
 }
