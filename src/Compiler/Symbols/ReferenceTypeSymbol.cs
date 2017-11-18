@@ -14,13 +14,13 @@ namespace Mango.Compiler.Symbols
             _typeLayout = new TypeLayout(4, 4);
         }
 
+        public override Symbol ContainingSymbol => null;
+
         public sealed override SymbolKind Kind => SymbolKind.ReferenceType;
 
         public TypeSymbol ReferencedType => _referencedType;
 
         public override TypeLayout TypeLayout => _typeLayout;
-
-        public override Symbol ContainingSymbol => null;
 
         public override bool Equals(TypeSymbol other) => (object)this == other || other is ReferenceTypeSymbol referenceType && _referencedType == referenceType._referencedType;
 

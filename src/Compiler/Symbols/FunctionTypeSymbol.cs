@@ -21,6 +21,8 @@ namespace Mango.Compiler.Symbols
             _typeLayout = new TypeLayout(4, 4);
         }
 
+        public override Symbol ContainingSymbol => null;
+
         public sealed override SymbolKind Kind => SymbolKind.FunctionType;
 
         public ImmutableArray<TypeSymbol> ParameterTypes => _parameterTypes;
@@ -30,8 +32,6 @@ namespace Mango.Compiler.Symbols
         public TypeSymbol ReturnType => _returnType;
 
         public override TypeLayout TypeLayout => _typeLayout;
-
-        public override Symbol ContainingSymbol => null;
 
         public override bool Equals(TypeSymbol other) => (object)this == other || other is FunctionTypeSymbol functionType && _returnType == functionType._returnType && _parameterTypes.Length == functionType._parameterTypes.Length && System.Linq.Enumerable.SequenceEqual(_parameterTypes, functionType._parameterTypes);
 

@@ -18,6 +18,8 @@ namespace Mango.Compiler.Symbols
             _typeLayout = new TypeLayout(checked(length * elementType.TypeLayout.Size), elementType.TypeLayout.Alignment);
         }
 
+        public override Symbol ContainingSymbol => null;
+
         public TypeSymbol ElementType => _elementType;
 
         public sealed override SymbolKind Kind => SymbolKind.ArrayType;
@@ -25,8 +27,6 @@ namespace Mango.Compiler.Symbols
         public int Length => _length;
 
         public override TypeLayout TypeLayout => _typeLayout;
-
-        public override Symbol ContainingSymbol => null;
 
         public override bool Equals(TypeSymbol other) => (object)this == other || other is ArrayTypeSymbol arrayType && _length == arrayType._length && _elementType == arrayType._elementType;
 
