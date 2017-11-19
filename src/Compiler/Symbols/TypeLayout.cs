@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Mango.Compiler.Utilities;
 
 namespace Mango.Compiler.Symbols
 {
     [StructLayout(LayoutKind.Sequential)]
+    [DebuggerDisplay("Size = {Size}, Alignment = {Alignment}")]
     public readonly struct TypeLayout : IEquatable<TypeLayout>
     {
         private readonly int _size;
