@@ -2,6 +2,7 @@ namespace Mango.Compiler.Symbols
 {
     public enum SymbolKind
     {
+        Module,
         SpecialType,
         FunctionType,
         ReferenceType,

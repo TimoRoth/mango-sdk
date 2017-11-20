@@ -9,6 +9,8 @@ namespace Mango.Compiler.Symbols
     {
         private protected Symbol() { }
 
+        public virtual ModuleSymbol ContainingModule => ContainingSymbol?.ContainingModule;
+
         public abstract Symbol ContainingSymbol { get; }
 
         public abstract SymbolKind Kind { get; }
