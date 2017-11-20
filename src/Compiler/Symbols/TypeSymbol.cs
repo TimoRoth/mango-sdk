@@ -24,9 +24,9 @@ namespace Mango.Compiler.Symbols
             this is ReferenceTypeSymbol reference ? reference.ReferencedType + "&" :
             this is ArrayTypeSymbol array ? array.ElementType + "[" + array.Length + "]" :
             this is SpanTypeSymbol span ? span.ElementType + "[]" :
-            this is FunctionTypeSymbol func ? func.ReturnType + "(" + string.Join(", ", func.ParameterTypes) + ")" :
-            this is StructuredTypeSymbol named ? "[" + named.ContainingModule.Name + "]" + named.Name :
-            throw new System.Exception();
+            this is FunctionTypeSymbol function ? function.ReturnType + "(" + string.Join(", ", function.ParameterTypes) + ")" :
+            this is StructuredTypeSymbol structure ? "[" + structure.ContainingModule.Name + "]" + structure.Name :
+            throw new Exception();
 
         internal static bool ValidLocationType(TypeSymbol type) => type != null && type.SpecialType != SpecialType.Null && type.SpecialType != SpecialType.Void;
 
