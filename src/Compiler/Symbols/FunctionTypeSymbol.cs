@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace Mango.Compiler.Symbols
 {
@@ -11,10 +13,10 @@ namespace Mango.Compiler.Symbols
         internal FunctionTypeSymbol(TypeSymbol returnType, ImmutableArray<TypeSymbol> parameterTypes)
         {
             if (!ValidReturnType(returnType))
-                throw new System.ArgumentException();
+                throw new ArgumentException();
             foreach (var parameterType in parameterTypes)
                 if (!ValidLocationType(parameterType))
-                    throw new System.ArgumentException();
+                    throw new ArgumentException();
 
             _returnType = returnType;
             _parameterTypes = parameterTypes;
@@ -35,7 +37,7 @@ namespace Mango.Compiler.Symbols
 
         public override TypeLayout TypeLayout => _typeLayout;
 
-        public override bool Equals(TypeSymbol other) => (object)this == other || other is FunctionTypeSymbol functionType && _returnType == functionType._returnType && _parameterTypes.Length == functionType._parameterTypes.Length && System.Linq.Enumerable.SequenceEqual(_parameterTypes, functionType._parameterTypes);
+        public override bool Equals(TypeSymbol other) => (object)this == other || other is FunctionTypeSymbol functionType && _returnType == functionType._returnType && _parameterTypes.Length == functionType._parameterTypes.Length && _parameterTypes.SequenceEqual(functionType._parameterTypes);
 
         public override int GetHashCode() => Utilities.Hash.CombineValues(_parameterTypes, Utilities.Hash.Combine(_returnType, (int)SymbolKind.FunctionType));
     }

@@ -1,3 +1,5 @@
+using System;
+
 namespace Mango.Compiler.Symbols
 {
     public sealed class ReferenceTypeSymbol : TypeSymbol
@@ -8,7 +10,7 @@ namespace Mango.Compiler.Symbols
         internal ReferenceTypeSymbol(TypeSymbol referencedType)
         {
             if (!ValidLocationType(referencedType))
-                throw new System.ArgumentException();
+                throw new ArgumentException();
 
             _referencedType = referencedType;
             _typeLayout = new TypeLayout(4, 4);

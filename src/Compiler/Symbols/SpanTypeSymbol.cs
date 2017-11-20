@@ -1,3 +1,5 @@
+using System;
+
 namespace Mango.Compiler.Symbols
 {
     public sealed class SpanTypeSymbol : TypeSymbol
@@ -8,7 +10,7 @@ namespace Mango.Compiler.Symbols
         internal SpanTypeSymbol(TypeSymbol elementType)
         {
             if (!ValidLocationType(elementType))
-                throw new System.ArgumentException();
+                throw new ArgumentException();
 
             _elementType = elementType;
             _typeLayout = new TypeLayout(8, 4);

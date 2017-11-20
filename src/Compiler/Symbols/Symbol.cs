@@ -1,9 +1,11 @@
+using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Mango.Compiler.Symbols
 {
     [DebuggerDisplay("{Kind, nq}, Name = {Name}")]
-    public abstract class Symbol : System.IEquatable<Symbol>
+    public abstract class Symbol : IEquatable<Symbol>
     {
         private protected Symbol() { }
 
@@ -21,6 +23,6 @@ namespace Mango.Compiler.Symbols
 
         public override bool Equals(object obj) => (object)this == obj;
 
-        public override int GetHashCode() => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(this);
+        public override int GetHashCode() => RuntimeHelpers.GetHashCode(this);
     }
 }

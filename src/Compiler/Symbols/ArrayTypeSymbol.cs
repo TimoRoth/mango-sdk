@@ -1,3 +1,5 @@
+using System;
+
 namespace Mango.Compiler.Symbols
 {
     public sealed class ArrayTypeSymbol : TypeSymbol
@@ -9,9 +11,9 @@ namespace Mango.Compiler.Symbols
         internal ArrayTypeSymbol(TypeSymbol elementType, int length)
         {
             if (!ValidLocationType(elementType))
-                throw new System.ArgumentException();
+                throw new ArgumentException();
             if (length < 0)
-                throw new System.ArgumentOutOfRangeException(nameof(length));
+                throw new ArgumentOutOfRangeException(nameof(length));
 
             _elementType = elementType;
             _length = length;

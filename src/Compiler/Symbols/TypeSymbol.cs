@@ -1,6 +1,9 @@
+using System;
+using System.Runtime.CompilerServices;
+
 namespace Mango.Compiler.Symbols
 {
-    public abstract class TypeSymbol : Symbol, System.IEquatable<TypeSymbol>
+    public abstract class TypeSymbol : Symbol, IEquatable<TypeSymbol>
     {
         private protected TypeSymbol() { }
 
@@ -14,7 +17,7 @@ namespace Mango.Compiler.Symbols
 
         public sealed override bool Equals(object obj) => (obj is TypeSymbol other) && Equals(other);
 
-        public override int GetHashCode() => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(this);
+        public override int GetHashCode() => RuntimeHelpers.GetHashCode(this);
 
         public override string ToString() =>
             this is SpecialTypeSymbol special ? special.Name :
