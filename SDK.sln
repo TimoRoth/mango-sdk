@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDK", "SDK", "{E3A4E1C7-40EC-41CA-BF8F-BFC9CC239C94}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,6 +15,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{DA2A98AD-9E83-4FE4-B713-2507842B1AA7}"
 	ProjectSection(SolutionItems) = preProject
 		build\InternalsVisibleTo.targets = build\InternalsVisibleTo.targets
+		build\Package.props = build\Package.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "tests\Tests.csproj", "{573A5FBF-13BA-478B-B7AA-9A557D71986B}"

@@ -1,0 +1,19 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version Condition="'$(Version)' == ''">$([System.DateTime]::UtcNow.ToString(y.M.0'-alpha-'ddHHmm))</Version>
+    <Authors>Klaus Hartke</Authors>
+    <Copyright>&#169; $([System.DateTime]::UtcNow.ToString(yyyy)) Klaus Hartke</Copyright>
+    <MinClientVersion>4.0</MinClientVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)..\LICENSE" PackagePath="" Visible="false" />
+    <Content Include="$(MSBuildThisFileDirectory)..\NOTICE" PackagePath="" Visible="false" />
+  </ItemGroup>
+
+</Project>
