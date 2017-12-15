@@ -1,0 +1,14 @@
+﻿<Project>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <SharedGUID>93847fe9-bb59-42a1-bacb-0e51bf5ffe90</SharedGUID>
+    <HasSharedItems>true</HasSharedItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Libraries.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Mango.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Mango.Internal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Mango.Metadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.SafeMangoHandle.cs" />
+  </ItemGroup>
+</Project>

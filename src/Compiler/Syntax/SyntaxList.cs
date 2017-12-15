@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Mango.Compiler.Syntax
 {
+    [DebuggerDisplay("Count = {Count}")]
     public struct SyntaxList<TNode> : IReadOnlyList<TNode> where TNode : SyntaxNode
     {
         private readonly TNode[] _items;

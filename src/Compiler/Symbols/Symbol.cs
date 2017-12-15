@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Mango.Compiler.Symbols.Source;
 
 namespace Mango.Compiler.Symbols
 {
@@ -9,9 +10,13 @@ namespace Mango.Compiler.Symbols
     {
         private protected Symbol() { }
 
+        public virtual ApplicationSymbol ContainingApplication => ContainingSymbol?.ContainingApplication;
+
         public virtual ModuleSymbol ContainingModule => ContainingSymbol?.ContainingModule;
 
         public abstract Symbol ContainingSymbol { get; }
+
+        internal virtual Compilation DeclaringCompilation => (ContainingModule as SourceModuleSymbol)?.DeclaringCompilation;
 
         public abstract SymbolKind Kind { get; }
 

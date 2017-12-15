@@ -6,6 +6,8 @@ namespace Mango.Compiler.Symbols
     {
         private protected FunctionSymbol() { }
 
+        public abstract bool IsExtern { get; }
+
         public sealed override SymbolKind Kind => SymbolKind.Function;
 
         public abstract ImmutableArray<LabelSymbol> Labels { get; }
@@ -21,5 +23,13 @@ namespace Mango.Compiler.Symbols
         public abstract TypeSymbol ReturnType { get; }
 
         public abstract FunctionTypeSymbol Type { get; }
+
+        public abstract int GetSystemCallOrdinal();
+
+        internal abstract LabelSymbol FindLabel(string name);
+
+        internal abstract LocalSymbol FindLocal(string name);
+
+        internal abstract ParameterSymbol FindParameter(string name);
     }
 }

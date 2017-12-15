@@ -13,5 +13,9 @@ namespace Mango.Compiler.Symbols
         public abstract override string Name { get; }
 
         public abstract ImmutableArray<StructuredTypeSymbol> Types { get; }
+
+        internal abstract FunctionSymbol FindFunction(string name);
+
+        internal abstract StructuredTypeSymbol FindType(string name);
     }
 }

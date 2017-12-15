@@ -18,11 +18,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{DA2A98AD
 		build\Package.props = build\Package.props
 	EndProjectSection
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Interop", "src\Interop\Interop.shproj", "{93847FE9-BB59-42A1-BACB-0E51BF5FFE90}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "tests\Tests.csproj", "{573A5FBF-13BA-478B-B7AA-9A557D71986B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mango.Cli", "src\Cli\Mango.Cli.csproj", "{162E6E31-1708-4E49-AF6B-46B2274D3DCA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mango.Compiler", "src\Compiler\Mango.Compiler.csproj", "{7599F725-FBD5-49B7-B483-89BC0EDD6561}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mango.Debugger", "src\Debugger\Mango.Debugger.csproj", "{082956FD-23FB-4DD6-AF13-8074EB26A9A8}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Interop\Interop.projitems*{93847fe9-bb59-42a1-bacb-0e51bf5ffe90}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -32,10 +41,18 @@ Global
 		{573A5FBF-13BA-478B-B7AA-9A557D71986B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{573A5FBF-13BA-478B-B7AA-9A557D71986B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{573A5FBF-13BA-478B-B7AA-9A557D71986B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{162E6E31-1708-4E49-AF6B-46B2274D3DCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{162E6E31-1708-4E49-AF6B-46B2274D3DCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{162E6E31-1708-4E49-AF6B-46B2274D3DCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{162E6E31-1708-4E49-AF6B-46B2274D3DCA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7599F725-FBD5-49B7-B483-89BC0EDD6561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7599F725-FBD5-49B7-B483-89BC0EDD6561}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7599F725-FBD5-49B7-B483-89BC0EDD6561}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7599F725-FBD5-49B7-B483-89BC0EDD6561}.Release|Any CPU.Build.0 = Release|Any CPU
+		{082956FD-23FB-4DD6-AF13-8074EB26A9A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{082956FD-23FB-4DD6-AF13-8074EB26A9A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{082956FD-23FB-4DD6-AF13-8074EB26A9A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{082956FD-23FB-4DD6-AF13-8074EB26A9A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

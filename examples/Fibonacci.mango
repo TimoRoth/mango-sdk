@@ -1,0 +1,64 @@
+module Fibonacci
+{
+    define void @main()
+    {
+        ldc       i32 23
+        call      i32 @recursive(i32)
+        break
+        pop
+        ret
+    }
+
+    define i32 @iterative(i32 %n)
+    {
+        local i32 %a
+        local i32 %b
+        local i32 %i
+
+        ldc       i32 0
+        stloc     %a
+        ldc       i32 1
+        stloc     %b
+        ldc       i32 0
+        stloc     %i
+        br.s      l2
+
+    l1: ldloc     %a
+        ldloc     %b
+        stloc     %a
+        ldloc     %b
+        add
+        stloc     %b
+        ldloc     %i
+        ldc       i32 1
+        add
+        stloc     %i
+    l2: ldloc     %i
+        ldarg     %n
+        blt.s     l1
+
+        ldloc     %a
+        ret
+    }
+
+    define i32 @recursive(i32 %n)
+    {
+        ldarg     %n
+        ldc       i32 2
+        bge.s     l1
+        
+        ldarg     %n
+        ret
+
+    l1: ldarg     %n
+        ldc       i32 1
+        sub
+        call      i32 @recursive(i32)
+        ldarg     %n
+        ldc       i32 2
+        sub
+        call      i32 @recursive(i32)
+        add
+        ret
+    }
+}

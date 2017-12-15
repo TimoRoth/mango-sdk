@@ -13,5 +13,7 @@ namespace Mango.Compiler.Symbols
         public abstract override string Name { get; }
 
         public sealed override TypeKind TypeKind => TypeKind.Structured;
+
+        internal abstract FieldSymbol FindField(string name);
     }
 }
