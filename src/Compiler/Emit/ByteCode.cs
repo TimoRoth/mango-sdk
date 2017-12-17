@@ -175,59 +175,6 @@ namespace Mango.Compiler.Emit
             }
         }
 
-        public void WriteTo(Stream stream)
-        {
-            switch (_length)
-            {
-            case 0:
-                break;
-            case 1:
-                stream.WriteByte(_byte0);
-                break;
-            case 2:
-                stream.WriteByte(_byte0);
-                stream.WriteByte(_byte1);
-                break;
-            case 3:
-                stream.WriteByte(_byte0);
-                stream.WriteByte(_byte1);
-                stream.WriteByte(_byte2);
-                break;
-            case 4:
-                stream.WriteByte(_byte0);
-                stream.WriteByte(_byte1);
-                stream.WriteByte(_byte2);
-                stream.WriteByte(_byte3);
-                break;
-            case 5:
-                stream.WriteByte(_byte0);
-                stream.WriteByte(_byte1);
-                stream.WriteByte(_byte2);
-                stream.WriteByte(_byte3);
-                stream.WriteByte(_byte4);
-                break;
-            case 6:
-                stream.WriteByte(_byte0);
-                stream.WriteByte(_byte1);
-                stream.WriteByte(_byte2);
-                stream.WriteByte(_byte3);
-                stream.WriteByte(_byte4);
-                stream.WriteByte(_byte5);
-                break;
-            case 7:
-                stream.WriteByte(_byte0);
-                stream.WriteByte(_byte1);
-                stream.WriteByte(_byte2);
-                stream.WriteByte(_byte3);
-                stream.WriteByte(_byte4);
-                stream.WriteByte(_byte5);
-                stream.WriteByte(_byte6);
-                break;
-            default:
-                throw new Exception();
-            }
-        }
-
         private static mango_feature_flags GetFeatures(mango_opcode opcode)
         {
             if ((int)opcode < 0x60)
