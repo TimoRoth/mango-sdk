@@ -195,7 +195,7 @@ namespace Mango.Compiler.Emit
 
             Unsafe.WriteUnaligned(ref image[offset], new mango_app_info
             {
-                features = (ushort)features,
+                features = unchecked((byte)writer.Features),
                 module_count = 1, // TODO: modules closure
                 entry_point_0 = (byte)(entryPointOffset != 0 ? CALL_S : NOP),
                 entry_point_1 = (byte)(entryPointOffset & 255),

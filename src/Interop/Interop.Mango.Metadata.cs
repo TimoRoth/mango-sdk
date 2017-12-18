@@ -250,7 +250,7 @@ internal static partial class Interop
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         internal struct mango_app_info
         {
-            internal ushort features;
+            internal byte features;
             internal byte module_count;
             internal byte entry_point_0;
             internal byte entry_point_1;
