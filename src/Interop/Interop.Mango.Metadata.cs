@@ -6,7 +6,7 @@ internal static partial class Interop
 {
     internal static partial class Libmango
     {
-        internal const int MANGO_IMAGE_MAGIC = 0x00FF;
+        internal const int MANGO_IMAGE_MAGIC = 0xFF;
 
         internal enum mango_func_attributes
         {
@@ -270,7 +270,7 @@ internal static partial class Interop
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         internal struct mango_module_def
         {
-            internal ushort magic;
+            internal byte magic;
             internal byte attributes;
             internal byte import_count;
             internal byte initializer_0;
