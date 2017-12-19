@@ -262,9 +262,9 @@ internal static partial class Interop
         internal struct mango_func_def
         {
             internal byte attributes;
-            internal byte max_stack;
             internal byte arg_count;
             internal byte loc_count;
+            internal byte max_stack;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
