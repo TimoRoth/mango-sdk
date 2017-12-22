@@ -1,14 +1,19 @@
-module Fibonacci
+module Program
 {
+    import Fibonacci
+
     define void @main()
     {
         ldc       i32 23
-        call      i32 @recursive(i32)
+        call      i32 <Fibonacci>@recursive(i32)
         break
         pop
         ret
     }
+}
 
+module Fibonacci
+{
     define i32 @iterative(i32 %n)
     {
         local i32 %a
