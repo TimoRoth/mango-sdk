@@ -53,6 +53,7 @@ namespace Mango.Compiler.Syntax
         VoidKeyword,
 
         ModuleKeyword,
+        ImportKeyword,
         TypeKeyword,
         FieldKeyword,
         DeclareKeyword,
@@ -197,6 +198,7 @@ namespace Mango.Compiler.Syntax
 
         CompilationUnit,
         ModuleDeclaration,
+        ImportDirective,
         TypeDeclaration,
         FieldDeclaration,
         FunctionDeclaration,

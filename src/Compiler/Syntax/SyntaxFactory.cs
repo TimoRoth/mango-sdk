@@ -11,7 +11,8 @@ namespace Mango.Compiler.Syntax
 
         public static CompilationUnitSyntax CompilationUnit(SyntaxList<ModuleDeclarationSyntax> modules) { var syntax = new CompilationUnitSyntax(modules); foreach (var module in syntax.Modules) module.Parent = syntax; return syntax; }
 
-        public static ModuleDeclarationSyntax ModuleDeclaration(string moduleName, SyntaxList<ModuleMemberSyntax> members) { var syntax = new ModuleDeclarationSyntax(moduleName, members); foreach (var member in syntax.Members) member.Parent = syntax; return syntax; }
+        public static ModuleDeclarationSyntax ModuleDeclaration(string moduleName, SyntaxList<ImportDirectiveSyntax> imports, SyntaxList<ModuleMemberSyntax> members) { var syntax = new ModuleDeclarationSyntax(moduleName, imports, members); foreach (var import in imports) import.Parent = syntax; foreach (var member in syntax.Members) member.Parent = syntax; return syntax; }
+        public static ImportDirectiveSyntax ImportDirective(string moduleName) { var syntax = new ImportDirectiveSyntax(moduleName); return syntax; }
 
         public static TypeDeclarationSyntax TypeDeclaration(string typeName, SyntaxList<FieldDeclarationSyntax> fields) { var syntax = new TypeDeclarationSyntax(typeName, fields); foreach (var field in syntax.Fields) field.Parent = syntax; return syntax; }
         public static FieldDeclarationSyntax FieldDeclaration(TypeSyntax fieldType, string fieldName) { var syntax = new FieldDeclarationSyntax(fieldType, fieldName); syntax.FieldType.Parent = syntax; return syntax; }

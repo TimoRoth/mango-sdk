@@ -10,7 +10,8 @@ namespace Mango.Compiler.Syntax
 
     public sealed partial class CompilationUnitSyntax : TypeSyntax { public SyntaxList<ModuleDeclarationSyntax> Modules { get; } internal CompilationUnitSyntax(SyntaxList<ModuleDeclarationSyntax> modules) : base(SyntaxKind.CompilationUnit) { Modules = modules; } }
 
-    public sealed partial class ModuleDeclarationSyntax : SyntaxNode { public string ModuleName { get; } public SyntaxList<ModuleMemberSyntax> Members { get; } internal ModuleDeclarationSyntax(string moduleName, SyntaxList<ModuleMemberSyntax> members) : base(SyntaxKind.ModuleDeclaration) { ModuleName = moduleName; Members = members; } }
+    public sealed partial class ModuleDeclarationSyntax : SyntaxNode { public string ModuleName { get; } public SyntaxList<ImportDirectiveSyntax> Imports { get; } public SyntaxList<ModuleMemberSyntax> Members { get; } internal ModuleDeclarationSyntax(string moduleName, SyntaxList<ImportDirectiveSyntax> imports, SyntaxList<ModuleMemberSyntax> members) : base(SyntaxKind.ModuleDeclaration) { ModuleName = moduleName; Imports = imports; Members = members; } }
+    public sealed partial class ImportDirectiveSyntax : SyntaxNode { public string ModuleName { get; } public ImportDirectiveSyntax(string moduleName) : base(SyntaxKind.ImportDirective) { ModuleName = moduleName; } }
     public abstract partial class ModuleMemberSyntax : SyntaxNode { private protected ModuleMemberSyntax(SyntaxKind kind) : base(kind) { } }
 
     public sealed partial class TypeDeclarationSyntax : ModuleMemberSyntax { public string TypeName { get; } public SyntaxList<FieldDeclarationSyntax> Fields { get; } internal TypeDeclarationSyntax(string typeName, SyntaxList<FieldDeclarationSyntax> fields) : base(SyntaxKind.TypeDeclaration) { TypeName = typeName; Fields = fields; } }

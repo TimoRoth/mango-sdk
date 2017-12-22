@@ -173,6 +173,7 @@ namespace Mango.Compiler.Parser
                 case "void": info.Kind = SyntaxKind.VoidKeyword; break;
 
                 case "module": info.Kind = SyntaxKind.ModuleKeyword; break;
+                case "import": info.Kind = SyntaxKind.ImportKeyword; break;
                 case "type": info.Kind = SyntaxKind.TypeKeyword; break;
                 case "field": info.Kind = SyntaxKind.FieldKeyword; break;
                 case "declare": info.Kind = SyntaxKind.DeclareKeyword; break;

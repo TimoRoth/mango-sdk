@@ -10,6 +10,7 @@ namespace Mango.Compiler.Symbols.Source
         private readonly ModuleDeclarationSyntax _syntax;
 
         private ImmutableArray<FunctionSymbol> _functions;
+        private ImmutableArray<ModuleSymbol> _imports;
         private ImmutableArray<StructuredTypeSymbol> _types;
 
         internal SourceModuleSymbol(SourceApplicationSymbol containingApplication, ModuleDeclarationSyntax syntax)
@@ -27,6 +28,8 @@ namespace Mango.Compiler.Symbols.Source
         internal override Compilation DeclaringCompilation => _containingApplication.DeclaringCompilation;
 
         public override ImmutableArray<FunctionSymbol> Functions => GetFunctions();
+
+        public override ImmutableArray<ModuleSymbol> Imports => GetImports();
 
         public override string Name => _syntax.ModuleName;
 
@@ -91,6 +94,27 @@ namespace Mango.Compiler.Symbols.Source
             }
 
             return _functions;
+        }
+
+        private ImmutableArray<ModuleSymbol> GetImports()
+        {
+            if (_imports.IsDefault)
+            {
+                var binder = DeclaringCompilation.Binder;
+                var imports = ImmutableArray.CreateBuilder<ModuleSymbol>(_syntax.Imports.Count);
+
+                foreach (var syntax in _syntax.Imports)
+                {
+                    var importedModule = binder.BindModule(syntax);
+                    if (importedModule == null)
+                        throw new Exception();
+                    imports.Add(importedModule);
+                }
+
+                ImmutableInterlocked.InterlockedInitialize(ref _imports, imports.MoveToImmutable());
+            }
+
+            return _imports;
         }
 
         private ImmutableArray<StructuredTypeSymbol> GetTypes()

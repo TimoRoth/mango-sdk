@@ -41,11 +41,11 @@ namespace Mango.Compiler.Parser
         {
             var name = (string)null;
 
-            if (CurrentToken == SyntaxKind.OpenBracketToken)
+            if (CurrentToken == SyntaxKind.LessThanToken)
             {
                 EatToken();
                 name = ParseIdentifierToken();
-                EatToken(SyntaxKind.CloseBracketToken);
+                EatToken(SyntaxKind.GreaterThanToken);
             }
 
             return name;
@@ -108,10 +108,10 @@ namespace Mango.Compiler.Parser
                 EatToken();
                 t = SyntaxFactory.PredefinedType(SyntaxKind.VoidType);
                 break;
-            case SyntaxKind.OpenBracketToken:
+            case SyntaxKind.LessThanToken:
                 EatToken();
                 moduleName = ParseIdentifierToken();
-                EatToken(SyntaxKind.CloseBracketToken);
+                EatToken(SyntaxKind.GreaterThanToken);
                 goto case SyntaxKind.IdentifierToken;
             case SyntaxKind.IdentifierToken:
                 typeName = ParseIdentifierToken();
@@ -195,6 +195,7 @@ namespace Mango.Compiler.Parser
             EatToken(SyntaxKind.ModuleKeyword);
             var name = ParseIdentifierToken();
             EatToken(SyntaxKind.OpenBraceToken);
+            var imports = new List<ImportDirectiveSyntax>();
             var members = new List<ModuleMemberSyntax>();
             var reportUnexpectedToken = true;
 
@@ -204,7 +205,11 @@ namespace Mango.Compiler.Parser
                 {
                 case SyntaxKind.CloseBraceToken:
                     EatToken();
-                    return SyntaxFactory.ModuleDeclaration(name, SyntaxFactory.List(members.ToArray()));
+                    return SyntaxFactory.ModuleDeclaration(name, SyntaxFactory.List(imports.ToArray()), SyntaxFactory.List(members.ToArray()));
+
+                case SyntaxKind.ImportKeyword:
+                    imports.Add(ParseImportDirective());
+                    break;
 
                 case SyntaxKind.TypeKeyword:
                     members.Add(ParseTypeDeclaration());
@@ -225,6 +230,14 @@ namespace Mango.Compiler.Parser
                     break;
                 }
             }
+        }
+
+        private ImportDirectiveSyntax ParseImportDirective()
+        {
+            EatToken(SyntaxKind.ImportKeyword);
+            var name = ParseIdentifierToken();
+
+            return SyntaxFactory.ImportDirective(name);
         }
 
         private TypeDeclarationSyntax ParseTypeDeclaration()

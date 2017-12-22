@@ -72,6 +72,11 @@ namespace Mango.Compiler.Binding
             return _applicationSymbol.FindModule(syntax.ModuleName);
         }
 
+        public ModuleSymbol BindModule(ImportDirectiveSyntax syntax)
+        {
+            return _applicationSymbol.FindModule(syntax.ModuleName);
+        }
+
         public ParameterSymbol BindParameter(ParameterDeclarationSyntax syntax)
         {
             return BindFunction(syntax.FirstAncestorOrSelf<FunctionDeclarationSyntax>())?.FindParameter(syntax.ParameterName);
