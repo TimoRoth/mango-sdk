@@ -51,11 +51,6 @@ namespace Mango.Compiler.Analysis
             return new DataFlowAnalysis<T>(_state.MoveToImmutable());
         }
 
-        protected void AddError(int target, Diagnostics.Diagnostic diagnostic)
-        {
-            _state[target] = _state[target].AddError(diagnostic);
-        }
-
         protected void BranchTo(int target, ImmutableStack<T> stack)
         {
             var existing = _state[target];
