@@ -1,0 +1,14 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SystemCollectionsImmutableVersion>1.5.0-preview1-26023-01</SystemCollectionsImmutableVersion>
+    <SystemMemoryVersion>4.5.0-preview1-26023-01</SystemMemoryVersion>
+    <SystemRuntimeCompilerServicesUnsafeVersion>4.5.0-preview1-26023-01</SystemRuntimeCompilerServicesUnsafeVersion>
+    <SystemValueTupleVersion>4.5.0-preview1-26023-01</SystemValueTupleVersion>
+  </PropertyGroup>
+
+</Project>

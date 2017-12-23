@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDK", "SDK", "{E3A4E1C7-40E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{DA2A98AD-9E83-4FE4-B713-2507842B1AA7}"
 	ProjectSection(SolutionItems) = preProject
+		build\Dependencies.props = build\Dependencies.props
 		build\InternalsVisibleTo.targets = build\InternalsVisibleTo.targets
 		build\Package.props = build\Package.props
 	EndProjectSection
