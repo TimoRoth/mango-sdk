@@ -111,33 +111,40 @@ namespace Mango.Compiler.Symbols.Source
         {
             if (_labels.IsDefault)
             {
-                var count = 0;
-
-                foreach (var instruction in _syntax.Body.Instructions)
+                if (_syntax.Body != null)
                 {
-                    var i = instruction;
-                    while (i.Kind == SyntaxKind.LabeledInstruction)
+                    var count = 0;
+
+                    foreach (var instruction in _syntax.Body.Instructions)
                     {
-                        var syntax = (LabeledInstructionSyntax)i;
-                        count++;
-                        i = syntax.LabeledInstruction;
+                        var i = instruction;
+                        while (i.Kind == SyntaxKind.LabeledInstruction)
+                        {
+                            var syntax = (LabeledInstructionSyntax)i;
+                            count++;
+                            i = syntax.LabeledInstruction;
+                        }
                     }
+
+                    var labels = ImmutableArray.CreateBuilder<LabelSymbol>(count);
+
+                    foreach (var instruction in _syntax.Body.Instructions)
+                    {
+                        var i = instruction;
+                        while (i.Kind == SyntaxKind.LabeledInstruction)
+                        {
+                            var syntax = (LabeledInstructionSyntax)i;
+                            labels.Add(new SourceLabelSymbol(this, syntax));
+                            i = syntax.LabeledInstruction;
+                        }
+                    }
+
+                    ImmutableInterlocked.InterlockedInitialize(ref _labels, labels.MoveToImmutable());
                 }
-
-                var labels = ImmutableArray.CreateBuilder<LabelSymbol>(count);
-
-                foreach (var instruction in _syntax.Body.Instructions)
+                else
                 {
-                    var i = instruction;
-                    while (i.Kind == SyntaxKind.LabeledInstruction)
-                    {
-                        var syntax = (LabeledInstructionSyntax)i;
-                        labels.Add(new SourceLabelSymbol(this, syntax));
-                        i = syntax.LabeledInstruction;
-                    }
+                    ImmutableInterlocked.InterlockedInitialize(ref _labels, ImmutableArray<LabelSymbol>.Empty);
                 }
-
-                ImmutableInterlocked.InterlockedInitialize(ref _labels, labels.MoveToImmutable());
             }
 
             return _labels;
@@ -147,18 +154,25 @@ namespace Mango.Compiler.Symbols.Source
         {
             if (_locals.IsDefault)
             {
-                var binder = DeclaringCompilation.Binder;
-                var locals = ImmutableArray.CreateBuilder<LocalSymbol>(_syntax.Body.Locals.Count);
-
-                foreach (var syntax in _syntax.Body.Locals)
+                if (_syntax.Body != null)
                 {
-                    var localType = binder.BindType(syntax.LocalType);
-                    if (!TypeSymbol.ValidLocationType(localType))
-                        throw new Exception();
-                    locals.Add(new SourceLocalSymbol(this, syntax, localType));
-                }
+                    var binder = DeclaringCompilation.Binder;
+                    var locals = ImmutableArray.CreateBuilder<LocalSymbol>(_syntax.Body.Locals.Count);
 
-                ImmutableInterlocked.InterlockedInitialize(ref _locals, locals.MoveToImmutable());
+                    foreach (var syntax in _syntax.Body.Locals)
+                    {
+                        var localType = binder.BindType(syntax.LocalType);
+                        if (!TypeSymbol.ValidLocationType(localType))
+                            throw new Exception();
+                        locals.Add(new SourceLocalSymbol(this, syntax, localType));
+                    }
+
+                    ImmutableInterlocked.InterlockedInitialize(ref _locals, locals.MoveToImmutable());
+                }
+                else
+                {
+                    ImmutableInterlocked.InterlockedInitialize(ref _locals, ImmutableArray<LocalSymbol>.Empty);
+                }
             }
 
             return _locals;
