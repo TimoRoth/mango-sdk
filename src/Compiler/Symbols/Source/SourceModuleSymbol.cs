@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Threading;
 using Mango.Compiler.Syntax;
 
 namespace Mango.Compiler.Symbols.Source
@@ -9,6 +10,7 @@ namespace Mango.Compiler.Symbols.Source
         private readonly SourceApplicationSymbol _containingApplication;
         private readonly ModuleDeclarationSyntax _syntax;
 
+        private FunctionSymbol _entryPoint;
         private ImmutableArray<FunctionSymbol> _functions;
         private ImmutableArray<ModuleSymbol> _imports;
         private ImmutableArray<StructuredTypeSymbol> _types;
@@ -26,6 +28,8 @@ namespace Mango.Compiler.Symbols.Source
         public override Symbol ContainingSymbol => _containingApplication;
 
         internal override Compilation DeclaringCompilation => _containingApplication.DeclaringCompilation;
+
+        public override FunctionSymbol EntryPoint => GetEntryPoint();
 
         public override ImmutableArray<FunctionSymbol> Functions => GetFunctions();
 
@@ -59,6 +63,30 @@ namespace Mango.Compiler.Symbols.Source
             }
 
             return null;
+        }
+
+        private FunctionSymbol GetEntryPoint()
+        {
+            if (_entryPoint == null) // TODO: may be null after GetEntryPoint()
+            {
+                var entryPoint = (FunctionSymbol)null;
+
+                foreach (var function in GetFunctions())
+                {
+                    if (string.Equals(function.Name, "main", StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(function.Name, "@main", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (function.Parameters.Length != 0) throw new Exception();
+                        if (!function.ReturnsVoid) throw new Exception();
+                        if (entryPoint != null) throw new Exception();
+                        entryPoint = function;
+                    }
+                }
+
+                Interlocked.CompareExchange(ref _entryPoint, entryPoint, null);
+            }
+
+            return _entryPoint;
         }
 
         private ImmutableArray<FunctionSymbol> GetFunctions()

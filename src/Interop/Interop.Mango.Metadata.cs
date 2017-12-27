@@ -6,20 +6,6 @@ internal static partial class Interop
 {
     internal static partial class Libmango
     {
-        internal const int MANGO_IMAGE_MAGIC = 0xFF;
-
-        internal enum mango_func_attributes
-        {
-            MANGO_FD_NONE = 0x0,
-            MANGO_FD_INIT_LOCALS = 0x1,
-        }
-
-        internal enum mango_module_attributes
-        {
-            MANGO_MD_NONE = 0x0,
-            MANGO_MD_EXECUTABLE = 0x2,
-        }
-
         internal enum mango_opcode
         {
             NOP = 0x00,
@@ -248,20 +234,8 @@ internal static partial class Interop
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        internal struct mango_app_info
-        {
-            internal byte features;
-            internal byte module_count;
-            internal byte entry_point_0;
-            internal byte entry_point_1;
-            internal byte entry_point_2;
-            internal byte entry_point_3;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
         internal struct mango_func_def
         {
-            internal byte attributes;
             internal byte arg_count;
             internal byte loc_count;
             internal byte max_stack;
@@ -270,13 +244,14 @@ internal static partial class Interop
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         internal struct mango_module_def
         {
-            internal byte magic;
-            internal byte attributes;
+            internal byte version;
+            internal byte features;
+            internal byte module_count;
             internal byte import_count;
-            internal byte initializer_0;
-            internal byte initializer_1;
-            internal byte initializer_2;
-            internal byte initializer_3;
+            internal byte entry_point_0;
+            internal byte entry_point_1;
+            internal byte entry_point_2;
+            internal byte entry_point_3;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 12)]

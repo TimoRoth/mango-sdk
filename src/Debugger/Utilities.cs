@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using static Interop.Libmango;
 
 namespace Mango.Debugger
@@ -25,7 +26,7 @@ namespace Mango.Debugger
 
         internal static ref readonly mango_vm GetVM(ReadOnlySpan<byte> memory)
         {
-            return ref memory.Slice(0, Unsafe.SizeOf<mango_vm>()).NonPortableCast<byte, mango_vm>().DangerousGetPinnableReference();
+            return ref MemoryMarshal.GetReference(memory.Slice(0, Unsafe.SizeOf<mango_vm>()).NonPortableCast<byte, mango_vm>());
         }
     }
 }

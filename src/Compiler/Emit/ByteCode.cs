@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Runtime.InteropServices;
 using static Interop.Libmango;
 using static Interop.Libmango.mango_feature_flags;
@@ -122,53 +121,53 @@ namespace Mango.Compiler.Emit
 
         public int Length => _length;
 
-        public int CopyTo(byte[] array, int offset)
+        public int CopyTo(Span<byte> span)
         {
             switch (_length)
             {
             case 0:
                 return 0;
             case 1:
-                array[offset + 0] = _byte0;
+                span[0] = _byte0;
                 return 1;
             case 2:
-                array[offset + 0] = _byte0;
-                array[offset + 1] = _byte1;
+                span[0] = _byte0;
+                span[1] = _byte1;
                 return 2;
             case 3:
-                array[offset + 0] = _byte0;
-                array[offset + 1] = _byte1;
-                array[offset + 2] = _byte2;
+                span[0] = _byte0;
+                span[1] = _byte1;
+                span[2] = _byte2;
                 return 3;
             case 4:
-                array[offset + 0] = _byte0;
-                array[offset + 1] = _byte1;
-                array[offset + 2] = _byte2;
-                array[offset + 3] = _byte3;
+                span[0] = _byte0;
+                span[1] = _byte1;
+                span[2] = _byte2;
+                span[3] = _byte3;
                 return 4;
             case 5:
-                array[offset + 0] = _byte0;
-                array[offset + 1] = _byte1;
-                array[offset + 2] = _byte2;
-                array[offset + 3] = _byte3;
-                array[offset + 4] = _byte4;
+                span[0] = _byte0;
+                span[1] = _byte1;
+                span[2] = _byte2;
+                span[3] = _byte3;
+                span[4] = _byte4;
                 return 5;
             case 6:
-                array[offset + 0] = _byte0;
-                array[offset + 1] = _byte1;
-                array[offset + 2] = _byte2;
-                array[offset + 3] = _byte3;
-                array[offset + 4] = _byte4;
-                array[offset + 5] = _byte5;
+                span[0] = _byte0;
+                span[1] = _byte1;
+                span[2] = _byte2;
+                span[3] = _byte3;
+                span[4] = _byte4;
+                span[5] = _byte5;
                 return 6;
             case 7:
-                array[offset + 0] = _byte0;
-                array[offset + 1] = _byte1;
-                array[offset + 2] = _byte2;
-                array[offset + 3] = _byte3;
-                array[offset + 4] = _byte4;
-                array[offset + 5] = _byte5;
-                array[offset + 6] = _byte6;
+                span[0] = _byte0;
+                span[1] = _byte1;
+                span[2] = _byte2;
+                span[3] = _byte3;
+                span[4] = _byte4;
+                span[5] = _byte5;
+                span[6] = _byte6;
                 return 7;
             default:
                 throw new Exception();

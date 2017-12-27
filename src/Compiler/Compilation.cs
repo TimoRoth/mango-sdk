@@ -53,19 +53,14 @@ namespace Mango.Compiler
             return Update(_applicationName, _syntaxTrees.Union(syntaxTrees));
         }
 
-        public Emit.CompiledModules Build()
+        public Emit.EmittedModules Build()
         {
-            return Compiler.Emit.CompiledModules.Create(this);
+            return Emit.Emitter.Build(this);
         }
 
         public bool ContainsSyntaxTree(SyntaxTree syntaxTree)
         {
             return _syntaxTrees.Contains(syntaxTree);
-        }
-
-        public void Emit(string path)
-        {
-            Build().Emit(path);
         }
 
         public Analysis.SemanticModel GetSemanticModel(SyntaxTree syntaxTree)

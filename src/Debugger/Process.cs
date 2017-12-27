@@ -2,7 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Mango.Compiler.Symbols;
+using Mango.Compiler.Emit;
 using static Interop.Libmango;
 using static Interop.Libmango.mango_result;
 
@@ -11,12 +11,12 @@ namespace Mango.Debugger
     public sealed class Process : IDisposable
     {
         private readonly SafeMangoHandle _handle;
-        private readonly ImmutableArray<ModuleSymbol>.Builder _symbols;
+        private readonly ImmutableArray<EmittedModule>.Builder _symbols;
 
         private Process(SafeMangoHandle handle)
         {
             _handle = handle;
-            _symbols = ImmutableArray.CreateBuilder<ModuleSymbol>();
+            _symbols = ImmutableArray.CreateBuilder<EmittedModule>();
         }
 
         public static Process Create(int heapSize, int stackSize)
@@ -35,6 +35,11 @@ namespace Mango.Debugger
             {
                 handle = new SafeMangoHandle(Marshal.AllocHGlobal(heapSize), heapSize);
                 handle.DangerousAddRef(ref addedRef);
+
+                unsafe
+                {
+                    Unsafe.InitBlockUnaligned(handle.DangerousGetHandle().ToPointer(), 0xCD, (uint)heapSize);
+                }
 
                 if (mango_version_major() != MANGO_VERSION_MAJOR ||
                     mango_version_minor() != MANGO_VERSION_MINOR)
@@ -119,7 +124,7 @@ namespace Mango.Debugger
             return mango_syscall(_handle);
         }
 
-        public void ImportModule(ReadOnlySpan<byte> name, ReadOnlySpan<byte> image, ModuleSymbol symbol = null)
+        public void ImportModule(ReadOnlySpan<byte> name, ReadOnlySpan<byte> image, EmittedModule symbol = null)
         {
             if (name.Length != Unsafe.SizeOf<mango_module_name>())
                 throw new ArgumentException();
@@ -143,8 +148,8 @@ namespace Mango.Debugger
 
                 var error = mango_module_import(
                     handle,
-                    ref name.DangerousGetPinnableReference(),
-                    ref unmanagedMemory.DangerousGetPinnableReference(),
+                    ref MemoryMarshal.GetReference(name),
+                    ref MemoryMarshal.GetReference(unmanagedMemory),
                     (UIntPtr)unmanagedMemory.Length,
                     IntPtr.Zero);
 

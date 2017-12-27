@@ -1,7 +1,5 @@
-module Program
+module Fibonacci
 {
-    import Fibonacci
-
     define void @main()
     {
         ldc       i32 23
@@ -10,10 +8,7 @@ module Program
         pop
         ret
     }
-}
 
-module Fibonacci
-{
     define i32 @iterative(i32 %n)
     {
         local i32 %a

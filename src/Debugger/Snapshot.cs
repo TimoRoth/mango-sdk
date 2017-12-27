@@ -3,6 +3,8 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using Mango.Compiler.Emit;
 using Mango.Compiler.Symbols;
 using static Interop.Libmango;
 
@@ -10,59 +12,34 @@ namespace Mango.Debugger
 {
     public sealed class Snapshot
     {
-        private readonly byte[] _memory;
-        private readonly ImmutableArray<ModuleSymbol> _symbols;
+        private readonly ReadOnlyMemory<byte> _memory;
+        private readonly ImmutableArray<EmittedModule> _symbols;
 
-        private ImmutableArray<Module> _modules;
         private ImmutableArray<StackFrame> _stackTrace;
 
-        private Snapshot(byte[] memory, ImmutableArray<ModuleSymbol> symbols = default)
+        private Snapshot(ReadOnlyMemory<byte> memory, ImmutableArray<EmittedModule> symbols = default)
         {
             _memory = memory;
             _symbols = symbols;
         }
 
-        public Module CurrentModule => CurrentStackFrame?.Module;
-
         public StackFrame CurrentStackFrame => StackTrace.LastOrDefault();
 
-        public Module EntryPointModule => Modules.FirstOrDefault();
+        public EmittedModule EntryPointModule => _symbols.IsDefaultOrEmpty ? null : _symbols[0];
 
-        public ReadOnlySpan<byte> MemoryDump => _memory;
+        public int HeapSize => (int)Utilities.GetVM(_memory.Span).heap_size;
 
-        public int MemorySize => _memory.Length;
+        public int HeapUsed => (int)Utilities.GetVM(_memory.Span).heap_used;
 
-        public int MemoryUsed => (int)Utilities.GetVM(_memory).heap_used;
+        public ReadOnlySpan<byte> MemoryDump => _memory.Span;
 
-        public ImmutableArray<Module> Modules
-        {
-            get
-            {
-                if (_modules.IsDefault)
-                {
-                    ImmutableInterlocked.InterlockedInitialize(ref _modules, Module.CreateModulesFrom(this, _symbols));
-                }
+        public ImmutableArray<EmittedModule> Modules => _symbols;
 
-                return _modules;
-            }
-        }
+        public int StackSize => Utilities.GetVM(_memory.Span).stack_size * Unsafe.SizeOf<mango_stackval>();
 
-        public int StackSize => Utilities.GetVM(_memory).stack_size * Unsafe.SizeOf<mango_stackval>();
+        public ImmutableArray<StackFrame> StackTrace => GetStackTrace();
 
-        public ImmutableArray<StackFrame> StackTrace
-        {
-            get
-            {
-                if (_stackTrace.IsDefault)
-                {
-                    ImmutableInterlocked.InterlockedInitialize(ref _stackTrace, StackFrame.CreateStackTraceFrom(_memory, _symbols, this));
-                }
-
-                return _stackTrace;
-            }
-        }
-
-        public int SystemCall => Utilities.GetVM(_memory).syscall;
+        public int SystemCall => Utilities.GetVM(_memory.Span).syscall;
 
         public static Snapshot Load(string path)
         {
@@ -124,36 +101,51 @@ namespace Mango.Debugger
 
         public void Save(string path)
         {
-            File.WriteAllBytes(path, _memory);
+            if (!MemoryMarshal.TryGetArray(_memory, out var array))
+                throw new InvalidOperationException();
+
+            File.WriteAllBytes(path, array.Array);
         }
 
         public void Save(Stream stream)
         {
             if (stream == null)
                 throw new ArgumentNullException(nameof(stream));
+            if (!MemoryMarshal.TryGetArray(_memory, out var array))
+                throw new InvalidOperationException();
 
-            stream.Write(_memory, 0, _memory.Length);
+            stream.Write(array.Array, array.Offset, array.Count);
         }
 
-        internal static Snapshot LoadInternal(byte[] memory, ImmutableArray<ModuleSymbol> symbols)
+        internal static Snapshot LoadInternal(ReadOnlyMemory<byte> memory, ImmutableArray<EmittedModule> symbols)
         {
             if (memory.Length < Unsafe.SizeOf<mango_vm>())
                 throw new FormatException();
 
-            ref readonly var vm = ref Utilities.GetVM(memory);
+            ref readonly var vm = ref Utilities.GetVM(memory.Span);
 
             if (vm.version != MANGO_VERSION_MAJOR ||
                 vm.heap_size != memory.Length ||
                 vm.heap_used < Unsafe.SizeOf<mango_vm>() ||
                 vm.heap_used > memory.Length ||
+                vm.modules.address == 0 ||
                 vm.modules_created == 0 ||
                 vm.modules_imported != vm.modules_created ||
-                vm.modules.address == 0 ||
                 vm.rp > vm.sp ||
                 vm.sp > vm.stack_size)
                 throw new FormatException();
 
             return new Snapshot(memory, symbols);
+        }
+
+        private ImmutableArray<StackFrame> GetStackTrace()
+        {
+            if (_stackTrace.IsDefault)
+            {
+                ImmutableInterlocked.InterlockedInitialize(ref _stackTrace, StackFrame.CreateStackTraceFrom(_memory.Span, _symbols, this));
+            }
+
+            return _stackTrace;
         }
     }
 }

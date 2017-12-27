@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using Mango.Compiler.Emit;
 using Mango.Compiler.Symbols;
+using Mango.Compiler.Verification;
 using static Interop.Libmango;
 
 namespace Mango.Debugger
@@ -9,49 +11,58 @@ namespace Mango.Debugger
     public sealed class StackFrame
     {
         private readonly mango_stack_frame _frame;
+        private readonly VerifiedFunction _function;
+        private readonly Instruction _instruction;
+        private readonly int _localsOffset;
         private readonly StackFrame _next;
+        private readonly int _parametersOffset;
         private readonly Snapshot _snapshot;
+        private readonly int _stackOffset;
 
-        //private readonly Instruction _instruction;
-        //private readonly int _localsOffset;
-        //private readonly int _parametersOffset;
-        //private readonly int _stackOffset;
-
-        private StackFrame(mango_stack_frame frame, StackFrame next, Snapshot snapshot = null)
+        private StackFrame(mango_stack_frame frame, StackFrame next, Snapshot snapshot)
         {
             _frame = frame;
             _next = next;
             _snapshot = snapshot;
         }
 
-        /*
-        private StackFrame(mango_stack_frame frame, StackFrame next, Snapshot snapshot, Instruction instruction, int stackOffset, int localsOffset, int parametersOffset)
+        private StackFrame(mango_stack_frame frame, StackFrame next, Snapshot snapshot, VerifiedFunction function)
         {
             _frame = frame;
             _next = next;
-            _instruction = instruction;
             _snapshot = snapshot;
+            _function = function;
+        }
+
+        private StackFrame(mango_stack_frame frame, StackFrame next, Snapshot snapshot, VerifiedFunction function, Instruction instruction, int stackOffset, int localsOffset, int parametersOffset)
+        {
+            _frame = frame;
+            _next = next;
+            _snapshot = snapshot;
+            _function = function;
+            _instruction = instruction;
             _stackOffset = stackOffset;
             _localsOffset = localsOffset;
             _parametersOffset = parametersOffset;
         }
-        */
 
         public int ByteCodeOffset => _frame.ip;
 
-        public Module Module => _snapshot?.Modules[_frame.module];
+        public Instruction CurrentInstruction => _instruction;
+
+        public FunctionSymbol FunctionSymbol => _function?.Symbol;
 
         public int ModuleIndex => _frame.module;
 
+        public ModuleSymbol ModuleSymbol => _function?.Symbol.ContainingModule;
+
         public StackFrame Next => _next;
 
-        //public Instruction CurrentInstruction => _instruction;
-        public FunctionSymbol FunctionSymbol => null; //_instruction?.ContainingFunction;
-        public ModuleSymbol ModuleSymbol => null; //_instruction?.ContainingFunction?.ContainingModule;
+        public VerifiedFunction VerifiedFunction => _function;
 
         internal Snapshot Snapshot => _snapshot;
 
-        internal static ImmutableArray<StackFrame> CreateStackTraceFrom(Span<byte> memory, ImmutableArray<ModuleSymbol> symbols = default, Snapshot snapshot = null)
+        internal static ImmutableArray<StackFrame> CreateStackTraceFrom(ReadOnlySpan<byte> memory, ImmutableArray<EmittedModule> symbols = default, Snapshot snapshot = null)
         {
             ref readonly var vm = ref Utilities.GetVM(memory);
             var returnStack = Utilities.GetReturnStack(memory, in vm);
@@ -68,21 +79,30 @@ namespace Mango.Debugger
                     var symbol = symbols[sf.module];
                     if (symbol != null)
                     {
-                        /*
-                        var instruction = ...;
-                        var function = instruction.ContainingFunction;
-                        var parametersOffset = offset;
-                        foreach (var parameter in function.Parameters)
-                            parametersOffset += (parameter.Type.TypeLayout.Size + 3) & ~3;
-                        var localsOffset = offset;
-                        foreach (var local in function.Locals)
-                            offset -= (local.Type.TypeLayout.Size + 3) & ~3;
-                        foreach (var type in instruction.StackBefore)
-                            offset -= (type.TypeLayout.Size + 3) & ~3;
-                        var stackOffset = offset;
-                        builder.Add(currentStackFrame = new StackFrame(sf, currentStackFrame, snapshot, instruction, stackOffset, localsOffset, parametersOffset));
-                        continue;
-                        */
+                        var function = symbol.GetFunctionFromOffset(sf.ip);
+                        if (function != null)
+                        {
+                            var instruction = symbol.GetInstructionFromOffset(sf.ip);
+                            if (instruction != null)
+                            {
+                                var parametersOffset = offset;
+                                foreach (var parameter in function.Symbol.Parameters)
+                                    parametersOffset += (parameter.Type.TypeLayout.Size + 3) & ~3;
+                                var localsOffset = offset;
+                                foreach (var local in function.Symbol.Locals)
+                                    offset -= (local.Type.TypeLayout.Size + 3) & ~3;
+                                foreach (var type in instruction.Stack)
+                                    offset -= (type.TypeLayout.Size + 3) & ~3;
+                                var stackOffset = offset;
+                                builder.Add(currentStackFrame = new StackFrame(sf, currentStackFrame, snapshot, function, instruction, stackOffset, localsOffset, parametersOffset));
+                                continue;
+                            }
+                            else
+                            {
+                                builder.Add(currentStackFrame = new StackFrame(sf, currentStackFrame, snapshot, function));
+                                continue;
+                            }
+                        }
                     }
                 }
 
@@ -94,51 +114,50 @@ namespace Mango.Debugger
 
         internal ImmutableStack<TypedValue> GetEvaluationStack()
         {
-            //if (_snapshot == null || _instruction == null)
-            return null;
+            if (_instruction == null)
+            {
+                return null;
+            }
 
-            /*
-            return GetEvaluationStack(_stackOffset, _instruction.StackBefore, _snapshot);
-            */
+            return GetEvaluationStack(_stackOffset, _instruction.Stack, _snapshot);
         }
 
         internal ImmutableDictionary<LocalSymbol, TypedValue> GetLocals()
         {
-            //if (_snapshot == null || _instruction == null)
-            return null;
-
-            /*
-            var offset = _localsOffset;
-            var builder = ImmutableDictionary.CreateBuilder<LocalSymbol, TypedValue>();
-
-            foreach (var local in _instruction.ContainingFunction.Locals)
+            if (_function == null || _function.Symbol.Locals == null)
             {
-                offset -= (local.Type.Layout.Size + 3) & ~3;
-                var s = offset.ToString("X8");
+                return null;
+            }
+
+            var builder = ImmutableDictionary.CreateBuilder<LocalSymbol, TypedValue>();
+            var offset = _localsOffset;
+
+            foreach (var local in _function.Symbol.Locals)
+            {
+                offset -= (local.Type.TypeLayout.Size + 3) & ~3;
                 builder.Add(local, new TypedValue(offset, local.Type, _snapshot));
             }
 
             return builder.ToImmutable();
-            */
         }
 
         internal ImmutableDictionary<ParameterSymbol, TypedValue> GetParameters()
         {
-            //if (_snapshot == null || _instruction == null)
-            return null;
-
-            /*
-            var offset = _parametersOffset;
-            var builder = ImmutableDictionary.CreateBuilder<ParameterSymbol, TypedValue>();
-
-            foreach (var parameter in _instruction.ContainingFunction.Parameters)
+            if (_function == null)
             {
-                offset -= (parameter.Type.Layout.Size + 3) & ~3;
+                return null;
+            }
+
+            var builder = ImmutableDictionary.CreateBuilder<ParameterSymbol, TypedValue>();
+            var offset = _parametersOffset;
+
+            foreach (var parameter in _function.Symbol.Parameters)
+            {
+                offset -= (parameter.Type.TypeLayout.Size + 3) & ~3;
                 builder.Add(parameter, new TypedValue(offset, parameter.Type, _snapshot));
             }
 
             return builder.ToImmutable();
-            */
         }
 
         private static ImmutableStack<TypedValue> GetEvaluationStack(int offset, ImmutableStack<TypeSymbol> types, Snapshot snapshot)

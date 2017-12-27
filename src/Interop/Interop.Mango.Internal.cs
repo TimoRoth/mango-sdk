@@ -7,17 +7,41 @@ internal static partial class Interop
     internal static partial class Libmango
     {
         [StructLayout(LayoutKind.Sequential)]
-        internal struct mango_ref
-        {
-            internal int address;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
         internal struct mango_function_token
         {
             private byte _reserved;
             internal byte module;
             internal ushort offset;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct mango_module
+        {
+            private uint _image_0;
+            private uint _image_1;
+
+            internal ushort image_size;
+
+            internal byte name_module;
+            internal byte name_index;
+
+            internal byte init_next;
+            internal byte init_prev;
+            internal byte init_flags;
+
+            internal byte import_count;
+            internal mango_ref imports;
+
+            internal mango_ref static_data;
+
+            private uint _context_0;
+            private uint _context_1;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct mango_ref
+        {
+            internal int address;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -49,19 +73,19 @@ internal static partial class Interop
         internal struct mango_vm
         {
             internal byte version;
-
             internal byte result;
             internal ushort syscall;
 
             internal uint heap_size;
             internal uint heap_used;
 
-            internal byte flags;
-            internal byte init_head;
-
+            internal mango_module_name startup_module_name;
+            internal mango_ref modules;
             internal byte modules_created;
             internal byte modules_imported;
-            internal mango_ref modules;
+
+            internal byte init_head;
+            internal byte init_flags;
 
             internal ushort stack_size;
             internal ushort rp;
@@ -69,35 +93,10 @@ internal static partial class Interop
             internal ushort sp_expected;
             internal mango_stack_frame sf;
 
-            private uint _reserved_0;
-            private uint _reserved_1;
-
-            internal mango_module_name app_name;
             internal uint @base;
 
-            private uint _context_0;
-            private uint _context_1;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct mango_module
-        {
-            private uint _image_0;
-            private uint _image_1;
-
-            internal ushort image_size;
-
-            internal byte name_module;
-            internal byte name_index;
-
-            internal byte init_next;
-            internal byte init_prev;
-            internal byte flags;
-
-            internal byte import_count;
-            internal mango_ref imports;
-
-            internal mango_ref static_data;
+            private uint _reserved_0;
+            private uint _reserved_1;
 
             private uint _context_0;
             private uint _context_1;
