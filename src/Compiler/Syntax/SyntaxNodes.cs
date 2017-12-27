@@ -8,7 +8,7 @@ namespace Mango.Compiler.Syntax
     public sealed partial class ReferenceTypeSyntax : TypeSyntax { public TypeSyntax ReferencedType { get; } internal ReferenceTypeSyntax(TypeSyntax referencedType) : base(SyntaxKind.ReferenceType) { ReferencedType = referencedType; } }
     public sealed partial class SpanTypeSyntax : TypeSyntax { public TypeSyntax ElementType { get; } internal SpanTypeSyntax(TypeSyntax elementType) : base(SyntaxKind.SpanType) { ElementType = elementType; } }
 
-    public sealed partial class CompilationUnitSyntax : TypeSyntax { public SyntaxList<ModuleDeclarationSyntax> Modules { get; } internal CompilationUnitSyntax(SyntaxList<ModuleDeclarationSyntax> modules) : base(SyntaxKind.CompilationUnit) { Modules = modules; } }
+    public sealed partial class CompilationUnitSyntax : SyntaxNode { public SyntaxList<ModuleDeclarationSyntax> Modules { get; } internal CompilationUnitSyntax(SyntaxList<ModuleDeclarationSyntax> modules) : base(SyntaxKind.CompilationUnit) { Modules = modules; } }
 
     public sealed partial class ModuleDeclarationSyntax : SyntaxNode { public string ModuleName { get; } public SyntaxList<ImportDirectiveSyntax> Imports { get; } public SyntaxList<ModuleMemberSyntax> Members { get; } internal ModuleDeclarationSyntax(string moduleName, SyntaxList<ImportDirectiveSyntax> imports, SyntaxList<ModuleMemberSyntax> members) : base(SyntaxKind.ModuleDeclaration) { ModuleName = moduleName; Imports = imports; Members = members; } }
     public sealed partial class ImportDirectiveSyntax : SyntaxNode { public string ModuleName { get; } public ImportDirectiveSyntax(string moduleName) : base(SyntaxKind.ImportDirective) { ModuleName = moduleName; } }
