@@ -68,7 +68,33 @@ namespace Mango.Debugger
 
         public Snapshot CreateSnapshot()
         {
-            return Snapshot.LoadInternal(_handle.ToArray(), _symbols.ToImmutableArray());
+            var handle = _handle;
+            var addedRef = false;
+            var success = false;
+            try
+            {
+                handle.DangerousAddRef(ref addedRef);
+
+                ReadOnlySpan<byte> memory;
+                unsafe
+                {
+                    memory = new ReadOnlySpan<byte>(handle.DangerousGetHandle().ToPointer(), handle.Length);
+                }
+
+                var heapUsed = (int)Utilities.GetVM(memory).heap_used;
+                var heap = memory.Slice(0, heapUsed).ToArray();
+                Utilities.SanitizeMemory(heap);
+                var snapshot = Snapshot.LoadInternal(heap, _symbols.ToImmutable());
+                success = true;
+                return snapshot;
+            }
+            finally
+            {
+                if (addedRef)
+                    handle.DangerousRelease();
+                if (!success)
+                    handle.Dispose();
+            }
         }
 
         public void Dispose()
