@@ -14,7 +14,7 @@ namespace Mango.Cli
         {
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("Mango Virtual Machine");
-            Console.WriteLine("(c) 2017 Klaus Hartke");
+            Console.WriteLine("(c) 2018 Klaus Hartke");
             Console.WriteLine();
 
             var memoryDump1 = (byte[])null;
