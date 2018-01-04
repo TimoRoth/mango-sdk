@@ -125,7 +125,8 @@ namespace Mango.Debugger
             ref readonly var vm = ref Utilities.GetVM(memory.Span);
 
             if (vm.version != MANGO_VERSION_MAJOR ||
-                vm.heap_size != memory.Length ||
+                vm.heap_size < memory.Length ||
+                vm.heap_used > vm.heap_size ||
                 vm.heap_used < Unsafe.SizeOf<mango_vm>() ||
                 vm.heap_used > memory.Length ||
                 vm.modules.address == 0 ||
@@ -135,7 +136,7 @@ namespace Mango.Debugger
                 vm.sp > vm.stack_size)
                 throw new FormatException();
 
-            return new Snapshot(memory, symbols);
+            return new Snapshot(memory.Slice(0, (int)vm.heap_used), symbols);
         }
 
         private ImmutableArray<StackFrame> GetStackTrace()

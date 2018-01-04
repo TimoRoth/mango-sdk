@@ -100,10 +100,10 @@ namespace Mango.Debugger
             {
                 handle.DangerousAddRef(ref addedRef);
 
-                Span<byte> memory;
+                ReadOnlySpan<byte> memory;
                 unsafe
                 {
-                    memory = new Span<byte>(handle.DangerousGetHandle().ToPointer(), handle.Length);
+                    memory = new ReadOnlySpan<byte>(handle.DangerousGetHandle().ToPointer(), handle.Length);
                 }
 
                 var stackTrace = StackFrame.CreateStackTraceFrom(memory, _symbols.ToImmutableArray());
