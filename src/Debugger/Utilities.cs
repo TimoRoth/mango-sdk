@@ -28,5 +28,25 @@ namespace Mango.Debugger
         {
             return ref MemoryMarshal.GetReference(memory.Slice(0, Unsafe.SizeOf<mango_vm>()).NonPortableCast<byte, mango_vm>());
         }
+
+        internal static void SanitizeMemory(Span<byte> memory)
+        {
+            var vm = memory.Slice(0, Unsafe.SizeOf<mango_vm>()).NonPortableCast<byte, mango_vm>();
+            var modules = memory.Slice(vm[0].modules.address, vm[0].modules_imported * Unsafe.SizeOf<mango_module>()).NonPortableCast<byte, mango_module>();
+
+            vm[0]._reserved_0 = 0;
+            vm[0]._reserved_1 = 0;
+            vm[0]._context_0 = 0;
+            vm[0]._context_1 = 0;
+
+            for (var i = 0; i < modules.Length; i++)
+            {
+                modules[i]._image_0 = 0;
+                modules[i]._image_1 = 0;
+                modules[i]._reserved_0 = 0;
+                modules[i]._context_0 = 0;
+                modules[i]._context_1 = 0;
+            }
+        }
     }
 }
