@@ -17,8 +17,8 @@ internal static partial class Interop
         [StructLayout(LayoutKind.Sequential)]
         internal struct mango_module
         {
-            private uint _image_0;
-            private uint _image_1;
+            internal uint _image_0;
+            internal uint _image_1;
 
             internal ushort image_size;
 
@@ -34,8 +34,8 @@ internal static partial class Interop
 
             internal mango_ref static_data;
 
-            private uint _context_0;
-            private uint _context_1;
+            internal uint _context_0;
+            internal uint _context_1;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -95,11 +95,11 @@ internal static partial class Interop
 
             internal uint @base;
 
-            private uint _reserved_0;
-            private uint _reserved_1;
+            internal uint _reserved_0;
+            internal uint _reserved_1;
 
-            private uint _context_0;
-            private uint _context_1;
+            internal uint _context_0;
+            internal uint _context_1;
         }
     }
 }
