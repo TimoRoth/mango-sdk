@@ -32,7 +32,7 @@ internal static partial class Interop
             internal byte import_count;
             internal mango_ref imports;
 
-            internal mango_ref static_data;
+            internal uint _reserved_0;
 
             internal uint _context_0;
             internal uint _context_1;
