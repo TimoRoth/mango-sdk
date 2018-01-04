@@ -61,6 +61,14 @@ namespace Mango.Debugger
             }
         }
 
+        public unsafe ReadOnlySpan<byte> GetMissingModule()
+        {
+            var ptr = mango_module_missing(_handle);
+            return ptr != IntPtr.Zero
+                ? new ReadOnlySpan<byte>(ptr.ToPointer(), Unsafe.SizeOf<mango_module_name>())
+                : ReadOnlySpan<byte>.Empty;
+        }
+
         public byte[] CreateMemoryDump()
         {
             return _handle.ToArray();
