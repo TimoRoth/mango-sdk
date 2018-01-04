@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Mango.Compiler.Symbols;
 
 namespace Mango.Compiler.Verification

@@ -1,4 +1,4 @@
-﻿namespace Mango.Compiler.Verification
+namespace Mango.Compiler.Verification
 {
     public sealed class NoneInstruction : Instruction
     {

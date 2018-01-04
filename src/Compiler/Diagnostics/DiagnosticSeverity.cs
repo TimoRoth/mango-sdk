@@ -1,4 +1,4 @@
-﻿namespace Mango.Compiler.Diagnostics
+namespace Mango.Compiler.Diagnostics
 {
     public enum DiagnosticSeverity
     {
