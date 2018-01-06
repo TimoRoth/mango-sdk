@@ -13,6 +13,10 @@ namespace Mango.Compiler.Syntax
 
         public SyntaxNode Parent { get; internal set; }
 
+        public abstract void Accept(SyntaxVisitor visitor);
+
+        public abstract TResult Accept<TResult>(SyntaxVisitor<TResult> visitor);
+
         public TNode FirstAncestorOrSelf<TNode>() where TNode : SyntaxNode
         {
             for (var node = this; node != null; node = node.Parent)
