@@ -18,7 +18,7 @@ namespace Mango.Cli
                 EmitSingleModuleToC("demo.inc", "demo_name", "demo_code", Compile(args.Skip(1)).Build());
                 return 0;
             case "debug":
-                DebugCommand.Debug(Compile(args.Skip(1)).Build());
+                DebugCommand.Debug(Compile(args.Skip(1)));
                 return 0;
             default:
                 Console.WriteLine("Unknown command");

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
-using Mango.Compiler.Emit;
+using Mango.Compiler;
 using Mango.Compiler.Symbols;
 using Mango.Debugger;
 
@@ -10,23 +10,32 @@ namespace Mango.Cli
 {
     internal static class DebugCommand
     {
-        internal static void Debug(EmittedModules compilation, int heapSize = 1024, int stackSize = 256)
+        internal static void Debug(Compilation compilation, string startupModule = null, int heapSize = 1024, int stackSize = 256)
         {
+            var memoryDump1 = (byte[])null;
+            var sw = new System.Diagnostics.Stopwatch();
+
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("Mango Virtual Machine");
             Console.WriteLine("(c) 2018 Klaus Hartke");
             Console.WriteLine();
 
-            var memoryDump1 = (byte[])null;
-            var sw = new System.Diagnostics.Stopwatch();
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.WriteLine("compiling...");
+            var emittedModules = compilation.Build();
 
         start:
             Console.ForegroundColor = ConsoleColor.DarkGray;
             var process = Process.Create(heapSize: heapSize, stackSize: stackSize);
             {
-                var module = compilation.Modules.Single();
-                Console.WriteLine("loading {0,-44} [{1}]", module.Symbol.Name, ToHex(module.Name));
-                process.ImportModule(module.Name, module.Image, module);
+                var missing = (startupModule == null) ? emittedModules.Modules.Single().Name : emittedModules.GetModuleByName(startupModule).Name;
+                while (!missing.IsEmpty)
+                {
+                    var module = emittedModules.GetModuleByFingerprint(missing);
+                    Console.WriteLine("loading {0,-44} [{1}]", module.Symbol.Name, ToHex(module.Name));
+                    process.ImportModule(module.Name, module.Image, module);
+                    missing = process.GetMissingModule();
+                }
             }
             Console.WriteLine("running...");
             Console.WriteLine();
@@ -382,7 +391,7 @@ namespace Mango.Cli
         private static string ToHex(ReadOnlySpan<byte> bytes)
         {
             var sb = new StringBuilder();
-            for (int i = 0; i < bytes.Length; i++)
+            for (var i = 0; i < bytes.Length; i++)
             {
                 sb.Append(bytes[i].ToString("x2"));
             }
