@@ -9,8 +9,8 @@ namespace Mango.Compiler.Symbols
         private static readonly TypeSymbol[] s_specialTypes = new TypeSymbol[SpecialTypeCount]
         {
             null,
-            new SpecialTypeSymbol("null", SpecialType.Null, 0, 0),
-            new SpecialTypeSymbol("void", SpecialType.Void, 0, 0),
+            new SpecialTypeSymbol("null", SpecialType.Null, 4, 4),
+            new SpecialTypeSymbol("void", SpecialType.Void, 0, 1),
             new SpecialTypeSymbol("bool", SpecialType.Bool, 1, 1),
             new SpecialTypeSymbol("i8", SpecialType.Int8, 1, 1),
             new SpecialTypeSymbol("i16", SpecialType.Int16, 2, 2),
