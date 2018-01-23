@@ -10,7 +10,7 @@ namespace Mango.Debugger
         NotImplemented = 68,
         BadImageFormat = 69,
         OutOfMemory = 80,
-        Security = 81,
+        Application = 81,
         StackOverflow = 82,
         StackImbalance = 83,
         Arithmetic = 84,
