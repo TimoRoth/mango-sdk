@@ -45,26 +45,35 @@ namespace Mango.Compiler.Symbols.Source
         {
             if (_typeInfo == null)
             {
-                var offset = 0;
-                var alignment = 0;
-                var binder = DeclaringCompilation.Binder;
-                var fields = ImmutableArray.CreateBuilder<FieldSymbol>(_syntax.Fields.Count);
-
-                foreach (var syntax in _syntax.Fields)
+                if (_syntax.Fields.Count == 0)
                 {
-                    var fieldType = binder.BindType(syntax.FieldType);
-                    if (!ValidLocationType(fieldType))
-                        throw new Exception();
-                    offset = (offset + (fieldType.TypeLayout.Alignment - 1)) & ~(fieldType.TypeLayout.Alignment - 1);
-                    fields.Add(new SourceFieldSymbol(this, syntax, fieldType, offset));
-                    offset += fieldType.TypeLayout.Size;
-                    if (alignment < fieldType.TypeLayout.Alignment)
-                        alignment = fieldType.TypeLayout.Alignment;
+                    var typeLayout = new TypeLayout(1, 1);
+
+                    Interlocked.CompareExchange(ref _typeInfo, new LazyTypeInfo(ImmutableArray<FieldSymbol>.Empty, typeLayout), null);
                 }
+                else
+                {
+                    var offset = 0;
+                    var alignment = 0;
+                    var binder = DeclaringCompilation.Binder;
+                    var fields = ImmutableArray.CreateBuilder<FieldSymbol>(_syntax.Fields.Count);
 
-                var typeLayout = new TypeLayout((offset + (alignment - 1)) & ~(alignment - 1), alignment);
+                    foreach (var syntax in _syntax.Fields)
+                    {
+                        var fieldType = binder.BindType(syntax.FieldType);
+                        if (!ValidLocationType(fieldType))
+                            throw new Exception();
+                        offset = (offset + (fieldType.TypeLayout.Alignment - 1)) & ~(fieldType.TypeLayout.Alignment - 1);
+                        fields.Add(new SourceFieldSymbol(this, syntax, fieldType, offset));
+                        offset += fieldType.TypeLayout.Size;
+                        if (alignment < fieldType.TypeLayout.Alignment)
+                            alignment = fieldType.TypeLayout.Alignment;
+                    }
 
-                Interlocked.CompareExchange(ref _typeInfo, new LazyTypeInfo(fields.MoveToImmutable(), typeLayout), null);
+                    var typeLayout = new TypeLayout((offset + (alignment - 1)) & ~(alignment - 1), alignment);
+
+                    Interlocked.CompareExchange(ref _typeInfo, new LazyTypeInfo(fields.MoveToImmutable(), typeLayout), null);
+                }
             }
 
             return _typeInfo;
