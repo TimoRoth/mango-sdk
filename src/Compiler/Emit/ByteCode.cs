@@ -15,6 +15,8 @@ namespace Mango.Compiler.Emit
         private readonly byte _byte4;
         private readonly byte _byte5;
         private readonly byte _byte6;
+        private readonly byte _byte7;
+        private readonly byte _byte8;
         private readonly byte _length;
         private readonly mango_feature_flags _features;
 
@@ -62,6 +64,25 @@ namespace Mango.Compiler.Emit
         }
 
         public ByteCode(mango_opcode opcode, int i32) : this(opcode, u32: unchecked((uint)i32))
+        {
+        }
+
+        public ByteCode(mango_opcode opcode, ulong u64) : this()
+        {
+            _byte0 = (byte)opcode;
+            _byte1 = unchecked((byte)u64);
+            _byte2 = unchecked((byte)(u64 >> 8));
+            _byte3 = unchecked((byte)(u64 >> 16));
+            _byte4 = unchecked((byte)(u64 >> 24));
+            _byte5 = unchecked((byte)(u64 >> 32));
+            _byte6 = unchecked((byte)(u64 >> 40));
+            _byte7 = unchecked((byte)(u64 >> 48));
+            _byte8 = unchecked((byte)(u64 >> 56));
+            _length = 9;
+            _features = GetFeatures(opcode);
+        }
+
+        public ByteCode(mango_opcode opcode, long i64) : this(opcode, u64: unchecked((ulong)i64))
         {
         }
 
@@ -169,6 +190,27 @@ namespace Mango.Compiler.Emit
                 span[5] = _byte5;
                 span[6] = _byte6;
                 return 7;
+            case 8:
+                span[0] = _byte0;
+                span[1] = _byte1;
+                span[2] = _byte2;
+                span[3] = _byte3;
+                span[4] = _byte4;
+                span[5] = _byte5;
+                span[6] = _byte6;
+                span[7] = _byte7;
+                return 8;
+            case 9:
+                span[0] = _byte0;
+                span[1] = _byte1;
+                span[2] = _byte2;
+                span[3] = _byte3;
+                span[4] = _byte4;
+                span[5] = _byte5;
+                span[6] = _byte6;
+                span[7] = _byte7;
+                span[8] = _byte8;
+                return 9;
             default:
                 throw new Exception();
             }

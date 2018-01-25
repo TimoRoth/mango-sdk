@@ -183,7 +183,8 @@ namespace Mango.Compiler.Analysis
         {
             var type = _binder.BindType(instruction);
 
-            if (type.SpecialType != SpecialType.Int32) throw new Exception();
+            if (type.SpecialType != SpecialType.Int32 &&
+                type.SpecialType != SpecialType.Int64) throw new Exception();
 
             return GetIntermediateType(type);
         }

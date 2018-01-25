@@ -113,6 +113,15 @@ namespace Mango.Compiler.Emit
                         throw new Exception();
                     }
 
+                case SpecialType.Int64:
+                    switch (instruction.Kind)
+                    {
+                    case InstructionKind.Ldc:
+                        return new ByteCode(LDC_X64, i64: (int)instruction.Value); // FIXME
+                    default:
+                        throw new Exception();
+                    }
+
                 default:
                     throw new Exception();
                 }
