@@ -101,14 +101,7 @@ namespace Mango.Compiler.Emit
 
                 WriteByteCode(new ByteCode(SYSCALL, i8: (sbyte)adjustment, u16: (ushort)ordinal));
 
-                if (function.Symbol.ReturnsVoid)
-                {
-                    WriteByteCode(new ByteCode(RET));
-                }
-                else
-                {
-                    WriteByteCode(new ByteCode(Select(GetIntermediateType(function.Symbol.ReturnType), RET_X32, RET_X64, RET_X32, RET_X64, RET_X32)));
-                }
+                WriteByteCode(new ByteCode(RET));
             }
 
             private void EmitFunction(VerifiedFunction function)
