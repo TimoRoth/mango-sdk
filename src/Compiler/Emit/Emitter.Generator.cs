@@ -261,7 +261,7 @@ namespace Mango.Compiler.Emit
                 case InstructionKind.Ldftn:
                     return new ByteCode(LDFTN, ftn: functionToken);
                 case InstructionKind.Syscall when instruction.Function.ContainingModule == _function.Symbol.ContainingModule:
-                    return GetSystemCall(instruction);
+                    return new ByteCode(CALL_S, u16: functionToken.offset);
                 case InstructionKind.Syscall:
                     return new ByteCode(CALL, ftn: functionToken);
                 default:
@@ -461,19 +461,6 @@ namespace Mango.Compiler.Emit
                 var target = _emittingModules == null ? default : _emittingModule.GetLabelOffset(_function, label) - (offset + new ByteCode(opcode1, opcode2, i8: 0).Length);
                 if (target < sbyte.MinValue || target > sbyte.MaxValue) throw new Exception();
                 return new ByteCode(opcode1, opcode2, i8: (sbyte)target);
-            }
-
-            private ByteCode GetSystemCall(FunctionInstruction instruction)
-            {
-                var returnSlotCount = CalculateReturnsSlotCount(instruction.Function);
-                var parametersSlotCount = CalculateParametersSlotCount(instruction.Function);
-                var adjustment = parametersSlotCount - returnSlotCount;
-                var ordinal = instruction.Function.GetSystemCallOrdinal();
-
-                if (adjustment < sbyte.MinValue || adjustment > sbyte.MaxValue) throw new Exception();
-                if (ordinal < ushort.MinValue || ordinal > ushort.MaxValue) throw new Exception();
-
-                return new ByteCode(SYSCALL, i8: (sbyte)adjustment, u16: (ushort)ordinal);
             }
         }
     }
