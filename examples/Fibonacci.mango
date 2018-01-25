@@ -3,7 +3,8 @@ module Fibonacci
     define void @main()
     {
         ldc       i32 23
-        call      i32 <Fibonacci>@recursive(i32)
+        call      i32 @recursive(i32)
+    //  call      i32 @iterative(i32)
         break
         pop
         ret
@@ -21,9 +22,9 @@ module Fibonacci
         stloc     %b
         ldc       i32 0
         stloc     %i
-        br.s      l2
+        br.s      L2
 
-    l1: ldloc     %a
+    L1: ldloc     %a
         ldloc     %b
         stloc     %a
         ldloc     %b
@@ -33,9 +34,9 @@ module Fibonacci
         ldc       i32 1
         add
         stloc     %i
-    l2: ldloc     %i
+    L2: ldloc     %i
         ldarg     %n
-        blt.s     l1
+        blt.s     L1
 
         ldloc     %a
         ret
@@ -45,12 +46,12 @@ module Fibonacci
     {
         ldarg     %n
         ldc       i32 2
-        bge.s     l1
+        bge.s     L1
         
         ldarg     %n
         ret
 
-    l1: ldarg     %n
+    L1: ldarg     %n
         ldc       i32 1
         sub
         call      i32 @recursive(i32)
