@@ -336,9 +336,9 @@ namespace Mango.Compiler.Analysis
             case SyntaxKind.Calli:
                 var type = (FunctionTypeSyntax)instruction.Type;
                 var arguments = new T[type.ParameterTypes.Count];
+                stack = stack.Pop(out var function);
                 for (var index = arguments.Length - 1; index >= 0; index--)
                     stack = stack.Pop(out arguments[index]);
-                stack = stack.Pop(out var function);
                 if (type.ReturnType.Kind == SyntaxKind.VoidType)
                     _interpreter.CalliVoid(instruction, arguments, function);
                 else
