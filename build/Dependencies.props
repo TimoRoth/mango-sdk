@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <SystemCollectionsImmutableVersion>1.5.0-preview1-26119-06</SystemCollectionsImmutableVersion>
-    <SystemMemoryVersion>4.5.0-preview1-26119-06</SystemMemoryVersion>
-    <SystemRuntimeCompilerServicesUnsafeVersion>4.5.0-preview1-26119-06</SystemRuntimeCompilerServicesUnsafeVersion>
-    <SystemValueTupleVersion>4.5.0-preview1-26119-06</SystemValueTupleVersion>
+    <SystemCollectionsImmutableVersion>1.5.0-preview1-26122-01</SystemCollectionsImmutableVersion>
+    <SystemMemoryVersion>4.5.0-preview1-26122-01</SystemMemoryVersion>
+    <SystemRuntimeCompilerServicesUnsafeVersion>4.5.0-preview1-26122-01</SystemRuntimeCompilerServicesUnsafeVersion>
+    <SystemValueTupleVersion>4.5.0-preview1-26122-01</SystemValueTupleVersion>
   </PropertyGroup>
 
 </Project>
