@@ -73,6 +73,7 @@ internal static partial class Interop
         internal struct mango_vm
         {
             internal byte version;
+
             internal byte result;
             internal ushort syscall;
 
