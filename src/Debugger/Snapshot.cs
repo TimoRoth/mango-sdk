@@ -133,7 +133,8 @@ namespace Mango.Debugger
                 vm.modules_created == 0 ||
                 vm.modules_imported != vm.modules_created ||
                 vm.rp > vm.sp ||
-                vm.sp > vm.stack_size)
+                vm.sp > vm.stack_size||
+                vm.@base != 0) // TODO: 32-bit snapshots
                 throw new FormatException();
 
             return new Snapshot(memory.Slice(0, (int)vm.heap_used), symbols);
