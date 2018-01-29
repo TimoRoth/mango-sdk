@@ -36,6 +36,8 @@ namespace Mango.Compiler.Emit
                     modules.Add(item.Link(this));
                 }
 
+                modules.Sort((x, y) => x.Name.SequenceCompareTo(y.Name));
+
                 return _result = new EmittedModules(modules.MoveToImmutable());
             }
 
