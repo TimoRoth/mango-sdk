@@ -45,7 +45,7 @@ namespace Mango.Compiler.Symbols
             return closure.ToImmutable();
         }
 
-        internal abstract FunctionSymbol FindFunction(string name);
+        internal abstract FunctionSymbol FindFunction(string name, TypeSymbol returnType, params TypeSymbol[] parameterTypes);
 
         internal abstract StructuredTypeSymbol FindType(string name);
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Mango.Compiler.Symbols;
 using Mango.Compiler.Symbols.Source;
 using Mango.Compiler.Syntax;
@@ -32,19 +33,22 @@ namespace Mango.Compiler.Binding
 
         public FunctionSymbol BindFunction(FunctionDeclarationSyntax syntax)
         {
-            return BindModule((ModuleDeclarationSyntax)syntax.Parent)?.FindFunction(syntax.FunctionName);
+            return BindModule((ModuleDeclarationSyntax)syntax.Parent)?.FindFunction(
+                syntax.FunctionName,
+                BindType(syntax.ReturnType),
+                syntax.Parameters.Select(p => BindType(p.ParameterType)).ToArray());
         }
 
         public FunctionSymbol BindFunction(FunctionInstructionSyntax syntax)
         {
-            if (syntax.ModuleName == null)
-            {
-                return BindModule(syntax.FirstAncestorOrSelf<ModuleDeclarationSyntax>())?.FindFunction(syntax.FunctionName);
-            }
-            else
-            {
-                return _applicationSymbol.FindModule(syntax.ModuleName)?.FindFunction(syntax.FunctionName);
-            }
+            var module = syntax.ModuleName == null
+                ? BindModule(syntax.FirstAncestorOrSelf<ModuleDeclarationSyntax>())
+                : _applicationSymbol.FindModule(syntax.ModuleName);
+
+            return module?.FindFunction(
+                syntax.FunctionName,
+                BindType(syntax.ReturnType),
+                syntax.ParameterTypes.Select(p => BindType(p)).ToArray());
         }
 
         public LabelSymbol BindLabel(LabeledInstructionSyntax syntax)

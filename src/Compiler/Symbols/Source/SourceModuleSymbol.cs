@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using Mango.Compiler.Syntax;
 
@@ -39,11 +40,14 @@ namespace Mango.Compiler.Symbols.Source
 
         public override ImmutableArray<StructuredTypeSymbol> Types => GetTypes();
 
-        internal override FunctionSymbol FindFunction(string name)
+        internal override FunctionSymbol FindFunction(string name, TypeSymbol returnType, TypeSymbol[] parameterTypes)
         {
             foreach (var function in Functions)
             {
-                if (function.Name == name)
+                if (function.Name == name &&
+                    function.ReturnType == returnType &&
+                    function.Parameters.Length == parameterTypes.Length &&
+                    function.Parameters.Select(p => p.Type).SequenceEqual(parameterTypes))
                 {
                     return function;
                 }
