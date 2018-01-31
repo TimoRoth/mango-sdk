@@ -85,12 +85,6 @@ namespace Mango.Compiler.Emit
             throw new Exception();
         }
 
-        internal static mango_opcode Select(TypeSymbol type, mango_opcode i32)
-        {
-            return type.SpecialType == SpecialType.Int32 ? i32 :
-                   throw new NotSupportedException();
-        }
-
         internal static mango_opcode Select(TypeSymbol type, mango_opcode i32, mango_opcode i64)
         {
             return type.SpecialType == SpecialType.Int32 ? i32 :

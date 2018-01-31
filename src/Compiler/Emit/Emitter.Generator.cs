@@ -66,9 +66,9 @@ namespace Mango.Compiler.Emit
                 case InstructionKind.Bne_Un:
                     return GetLongBranch(Select(instruction.Type, CEQ_I32, CEQ_I64, CEQ_F32, CEQ_F64, CEQ_I32), BRFALSE, offset, instruction.Label);
                 case InstructionKind.Brfalse:
-                    return GetLongBranch(Select(instruction.Type, BRFALSE), offset, instruction.Label);
+                    return GetLongBranch(BRFALSE, offset, instruction.Label);
                 case InstructionKind.Brtrue:
-                    return GetLongBranch(Select(instruction.Type, BRTRUE), offset, instruction.Label);
+                    return GetLongBranch(BRTRUE, offset, instruction.Label);
 
                 case InstructionKind.Beq_S:
                     return GetShortBranch(Select(instruction.Type, CEQ_I32, CEQ_I64, CEQ_F32, CEQ_F64, CEQ_I32), BRTRUE_S, offset, instruction.Label);
@@ -91,9 +91,9 @@ namespace Mango.Compiler.Emit
                 case InstructionKind.Bne_Un_S:
                     return GetShortBranch(Select(instruction.Type, CEQ_I32, CEQ_I64, CEQ_F32, CEQ_F64, CEQ_I32), BRFALSE_S, offset, instruction.Label);
                 case InstructionKind.Brfalse_S:
-                    return GetShortBranch(Select(instruction.Type, BRFALSE_S), offset, instruction.Label);
+                    return GetShortBranch(BRFALSE_S, offset, instruction.Label);
                 case InstructionKind.Brtrue_S:
-                    return GetShortBranch(Select(instruction.Type, BRTRUE_S), offset, instruction.Label);
+                    return GetShortBranch(BRTRUE_S, offset, instruction.Label);
 
                 default:
                     throw new Exception();

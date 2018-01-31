@@ -47,12 +47,12 @@ namespace Mango.Compiler.Analysis
 
         public void Brfalse(BranchInstructionSyntax instruction, TypeSymbol value)
         {
-            if (!IsIntegerOrReference(value)) throw new Exception();
+            if (!IsInt32OrReference(value)) throw new Exception();
         }
 
         public void Brtrue(BranchInstructionSyntax instruction, TypeSymbol value)
         {
-            if (!IsIntegerOrReference(value)) throw new Exception();
+            if (!IsInt32OrReference(value)) throw new Exception();
         }
 
         public TypeSymbol Call_Syscall(FunctionInstructionSyntax instruction, TypeSymbol[] arguments)
@@ -433,17 +433,16 @@ namespace Mango.Compiler.Analysis
             return value is ReferenceTypeSymbol reference ? reference.ReferencedType : throw new Exception();
         }
 
+        private static bool IsInt32OrReference(TypeSymbol type)
+        {
+            return type.SpecialType == SpecialType.Int32 ||
+                   type.TypeKind == TypeKind.Reference;
+        }
+
         private static bool IsInteger(TypeSymbol type)
         {
             return type.SpecialType == SpecialType.Int32 ||
                    type.SpecialType == SpecialType.Int64;
-        }
-
-        private static bool IsIntegerOrReference(TypeSymbol type)
-        {
-            return type.SpecialType == SpecialType.Int32 ||
-                   type.SpecialType == SpecialType.Int64 ||
-                   type.TypeKind == TypeKind.Reference;
         }
 
         private static bool IsNumeric(TypeSymbol type)
