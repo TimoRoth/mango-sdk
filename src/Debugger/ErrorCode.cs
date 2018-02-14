@@ -18,6 +18,7 @@ namespace Mango.Debugger
         IndexOutOfRange = 86,
         InvalidProgram = 87,
         NullReference = 88,
+        SystemCallNotFound = 89,
         Breakpoint = 110,
         Timeout = 111,
         SystemCall = 112,
