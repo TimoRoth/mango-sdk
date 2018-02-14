@@ -9,7 +9,7 @@ internal static partial class Interop
         [StructLayout(LayoutKind.Sequential)]
         internal struct mango_function_token
         {
-            private byte _reserved;
+            internal byte _reserved;
             internal byte module;
             internal ushort offset;
         }
