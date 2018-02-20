@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Runtime.InteropServices;
 using Mango.Compiler.Symbols;
 
 namespace Mango.Debugger
@@ -32,25 +33,25 @@ namespace Mango.Debugger
                     case SpecialType.Bool:
                         return _snapshot.MemoryDump[_offset] != 0;
                     case SpecialType.Int8:
-                        return _snapshot.MemoryDump.Slice(_offset, sizeof(sbyte)).NonPortableCast<byte, sbyte>()[0];
+                        return MemoryMarshal.Cast<byte, sbyte>(_snapshot.MemoryDump.Slice(_offset, sizeof(sbyte)))[0];
                     case SpecialType.Int16:
-                        return _snapshot.MemoryDump.Slice(_offset, sizeof(short)).NonPortableCast<byte, short>()[0];
+                        return MemoryMarshal.Cast<byte, short>(_snapshot.MemoryDump.Slice(_offset, sizeof(short)))[0];
                     case SpecialType.Int32:
-                        return _snapshot.MemoryDump.Slice(_offset, sizeof(int)).NonPortableCast<byte, int>()[0];
+                        return MemoryMarshal.Cast<byte, int>(_snapshot.MemoryDump.Slice(_offset, sizeof(int)))[0];
                     case SpecialType.Int64:
-                        return _snapshot.MemoryDump.Slice(_offset, sizeof(long)).NonPortableCast<byte, long>()[0];
+                        return MemoryMarshal.Cast<byte, long>(_snapshot.MemoryDump.Slice(_offset, sizeof(long)))[0];
                     case SpecialType.UInt8:
-                        return _snapshot.MemoryDump[_offset];
+                        return MemoryMarshal.Cast<byte, byte>(_snapshot.MemoryDump.Slice(_offset, sizeof(byte)))[0];
                     case SpecialType.UInt16:
-                        return _snapshot.MemoryDump.Slice(_offset, sizeof(ushort)).NonPortableCast<byte, ushort>()[0];
+                        return MemoryMarshal.Cast<byte, ushort>(_snapshot.MemoryDump.Slice(_offset, sizeof(ushort)))[0];
                     case SpecialType.UInt32:
-                        return _snapshot.MemoryDump.Slice(_offset, sizeof(uint)).NonPortableCast<byte, uint>()[0];
+                        return MemoryMarshal.Cast<byte, uint>(_snapshot.MemoryDump.Slice(_offset, sizeof(uint)))[0];
                     case SpecialType.UInt64:
-                        return _snapshot.MemoryDump.Slice(_offset, sizeof(ulong)).NonPortableCast<byte, ulong>()[0];
+                        return MemoryMarshal.Cast<byte, ulong>(_snapshot.MemoryDump.Slice(_offset, sizeof(ulong)))[0];
                     case SpecialType.Float32:
-                        return _snapshot.MemoryDump.Slice(_offset, sizeof(float)).NonPortableCast<byte, float>()[0];
+                        return MemoryMarshal.Cast<byte, float>(_snapshot.MemoryDump.Slice(_offset, sizeof(float)))[0];
                     case SpecialType.Float64:
-                        return _snapshot.MemoryDump.Slice(_offset, sizeof(double)).NonPortableCast<byte, double>()[0];
+                        return MemoryMarshal.Cast<byte, double>(_snapshot.MemoryDump.Slice(_offset, sizeof(double)))[0];
                     }
                 }
 

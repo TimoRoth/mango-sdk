@@ -11,33 +11,33 @@ namespace Mango.Debugger
 
         internal static ReadOnlySpan<mango_stackval> GetEvaluationStack(ReadOnlySpan<byte> memory, in mango_vm vm)
         {
-            return memory.Slice(Unsafe.SizeOf<mango_vm>() + vm.sp * Unsafe.SizeOf<mango_stackval>(), (vm.stack_size - vm.sp) * Unsafe.SizeOf<mango_stackval>()).NonPortableCast<byte, mango_stackval>();
+            return MemoryMarshal.Cast<byte, mango_stackval>(memory.Slice(Unsafe.SizeOf<mango_vm>() + vm.sp * Unsafe.SizeOf<mango_stackval>(), (vm.stack_size - vm.sp) * Unsafe.SizeOf<mango_stackval>()));
         }
 
         internal static ReadOnlySpan<mango_module> GetModules(ReadOnlySpan<byte> memory, in mango_vm vm)
         {
-            return memory.Slice(vm.modules.address, vm.modules_imported * Unsafe.SizeOf<mango_module>()).NonPortableCast<byte, mango_module>();
+            return MemoryMarshal.Cast<byte, mango_module>(memory.Slice(vm.modules.address, vm.modules_imported * Unsafe.SizeOf<mango_module>()));
         }
 
         internal static ReadOnlySpan<mango_stack_frame> GetReturnStack(ReadOnlySpan<byte> memory, in mango_vm vm)
         {
-            return memory.Slice(Unsafe.SizeOf<mango_vm>(), vm.rp * Unsafe.SizeOf<mango_stack_frame>()).NonPortableCast<byte, mango_stack_frame>();
+            return MemoryMarshal.Cast<byte, mango_stack_frame>(memory.Slice(Unsafe.SizeOf<mango_vm>(), vm.rp * Unsafe.SizeOf<mango_stack_frame>()));
         }
 
         internal static ref readonly mango_vm GetVM(ReadOnlySpan<byte> memory)
         {
-            return ref MemoryMarshal.GetReference(memory.Slice(0, Unsafe.SizeOf<mango_vm>()).NonPortableCast<byte, mango_vm>());
+            return ref MemoryMarshal.GetReference(MemoryMarshal.Cast<byte, mango_vm>(memory.Slice(0, Unsafe.SizeOf<mango_vm>())));
         }
 
         internal static void SanitizeMemory(Span<byte> memory)
         {
-            var vm = memory.Slice(0, Unsafe.SizeOf<mango_vm>()).NonPortableCast<byte, mango_vm>();
-            var modules = memory.Slice(vm[0].modules.address, vm[0].modules_imported * Unsafe.SizeOf<mango_module>()).NonPortableCast<byte, mango_module>();
+            ref var vm = ref MemoryMarshal.GetReference(MemoryMarshal.Cast<byte, mango_vm>(memory.Slice(0, Unsafe.SizeOf<mango_vm>())));
+            var modules = MemoryMarshal.Cast<byte, mango_module>(memory.Slice(vm.modules.address, vm.modules_imported * Unsafe.SizeOf<mango_module>()));
 
-            vm[0]._reserved_0 = 0;
-            vm[0]._reserved_1 = 0;
-            vm[0]._context_0 = 0;
-            vm[0]._context_1 = 0;
+            vm._reserved_0 = 0;
+            vm._reserved_1 = 0;
+            vm._context_0 = 0;
+            vm._context_1 = 0;
 
             for (var i = 0; i < modules.Length; i++)
             {
