@@ -1,7 +1,7 @@
 using System;
-using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Mango.Compiler.Symbols;
 using Mango.Compiler.Verification;
 using static Interop.Libmango;
@@ -190,7 +190,7 @@ namespace Mango.Compiler.Emit
 
             private void WriteFunction(mango_func_def definition)
             {
-                BinaryPrimitives.WriteMachineEndian(new Span<byte>(_image, _offset, Unsafe.SizeOf<mango_func_def>()), ref definition);
+                MemoryMarshal.Write(new Span<byte>(_image, _offset, Unsafe.SizeOf<mango_func_def>()), ref definition);
                 _offset += Unsafe.SizeOf<mango_func_def>();
             }
 
@@ -202,7 +202,7 @@ namespace Mango.Compiler.Emit
 
             private void WriteModule(mango_module_def definition)
             {
-                BinaryPrimitives.WriteMachineEndian(new Span<byte>(_image, _offset, Unsafe.SizeOf<mango_module_def>()), ref definition);
+                MemoryMarshal.Write(new Span<byte>(_image, _offset, Unsafe.SizeOf<mango_module_def>()), ref definition);
                 _offset += Unsafe.SizeOf<mango_module_def>();
             }
         }

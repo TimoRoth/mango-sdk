@@ -12,7 +12,6 @@ Build from sources
     $ git clone https://github.com/ektrah/mango-sdk
     $ cd mango-sdk
     $ nano src/Interop/Interop.Libraries.cs
-    $ dotnet restore -s https://api.nuget.org/v3/index.json -s https://dotnet.myget.org/F/dotnet-core/api/v3/index.json
     $ dotnet build
     $ nano mango
     $ chmod u+x mango
