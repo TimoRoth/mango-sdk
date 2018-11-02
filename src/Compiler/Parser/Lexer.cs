@@ -515,14 +515,14 @@ namespace Mango.Compiler.Parser
             for (; ; )
             {
                 var ch = _text[_pos];
-                if (ch == ' ')
+                if (ch == ' ' || ch == '\t')
                 {
                     _pos++;
                     _column++;
                     for (; ; )
                     {
                         ch = _text[_pos];
-                        if (ch != ' ')
+                        if (ch != ' ' && ch != '\t')
                         {
                             break;
                         }
