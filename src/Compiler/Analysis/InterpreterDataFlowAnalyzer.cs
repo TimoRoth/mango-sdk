@@ -269,7 +269,7 @@ namespace Mango.Compiler.Analysis
 
             case SyntaxKind.Dup:
                 _interpreter.Dup(instruction, stack.Peek());
-                stack = stack.Push(stack.Peek()).Push(stack.Peek());
+                stack = stack.Push(stack.Peek());
                 BranchTo(i + 1, stack);
                 break;
 
