@@ -52,6 +52,11 @@ namespace Mango.Compiler.Analysis
         {
             var v = GetVerificationType(t);
 
+            if (s is ReferenceTypeSymbol sReference)
+                s = sReference.ReferencedType;
+            if (v is ReferenceTypeSymbol vReference)
+                v = vReference.ReferencedType;
+
             return s == v ||
                    s.SpecialType == SpecialType.Null && v.TypeKind == TypeKind.Reference ||
                    s.SpecialType == SpecialType.Int32 && v.SpecialType == SpecialType.Int8 ||

@@ -307,12 +307,12 @@ namespace Mango.Compiler.Analysis
             case SyntaxKind.Ret:
                 if (_returnsVoid)
                 {
-                    if (!stack.IsEmpty) throw new Exception();
+                    if (!stack.IsEmpty) throw new Exception("Non-Empty stack at return from void");
                     _interpreter.Ret(instruction);
                 }
                 else
                 {
-                    if (stack.IsEmpty || !stack.Pop().IsEmpty) throw new Exception();
+                    if (stack.IsEmpty || !stack.Pop().IsEmpty) throw new Exception("Empty stack at return from non-void");
                     _interpreter.Ret(instruction, stack.Peek());
                 }
                 break;
